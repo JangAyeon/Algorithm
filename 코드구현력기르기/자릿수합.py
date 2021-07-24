@@ -17,7 +17,7 @@ for i in arr:
 print(max_num)
 
 
-#code from lecture (1)
+#code from lecture (1) : 수식 이용
 n=int(input())
 a=list(map(int,input().split()))
 
@@ -36,20 +36,20 @@ for x in a:
         max=total
         res=x
 
-#code from lecture (2)
+#code from lecture (2) : iter과 형 변환 이용
 n=int(input())
 a=list(map(int,input().split()))
 
 def digit_sum(x):
     sum=0
-    for i in str(x):
-        sum+=int(i)
+    for i in str(x): #한글자씩 받아서
+        sum+=int(i) #숫자로 바꾸고 총합에 추가
     return sum
 
 
 max=-217000000
 for x in a:
     total=digit_sum(x)
-    if total>max:
+    if total>max: #이전 총합보다 더 크면 갱신
         max=total
         res=x
