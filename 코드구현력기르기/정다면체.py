@@ -21,7 +21,6 @@ for val in plus:
         elif cnt==plus.count(val):
             num.append(val)
 
-
 for i in num:
     print(i,end=" ")
 
