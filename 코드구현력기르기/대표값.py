@@ -6,14 +6,13 @@ avg=round(sum(arr)/len(arr))
 res=float("inf")
 score=[]
 
-
 for i,x in enumerate(arr):
     if res>abs(avg-x):
         res=abs(avg-x)
         score.clear()
         score.append(x)
     elif res==abs(avg-x):
-        score.append(x)
+        score.append(x) 
 
 
 print(avg,arr.index(max(score))+1)
@@ -21,7 +20,7 @@ print(avg,arr.index(max(score))+1)
 #code from lecture
 n=int(input())
 a=list(map(int,input()))
-ave=round(sum(a)/n) #평균
+ave=round(sum(a)/n+0.5) #평균
 min=2147000000
 
 for idx, x in enumerate(a):
@@ -37,3 +36,5 @@ for idx, x in enumerate(a):
             res=idx+1
 
 print(avg, res)
+
+
