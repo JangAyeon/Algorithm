@@ -19,7 +19,7 @@ for i in range(N):
 print(sum(res))
 
 
-#code from lecture
+#code from lecture : 리스트 사용 X
 n=int(input())
 a=list(map(int,input().split()))
 sum=0
