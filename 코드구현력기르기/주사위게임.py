@@ -22,7 +22,7 @@ for _ in range(N):
 
 print(max(res))
 
-#code from lecture
+#code from lecture : if문 이용
 n=int(input())
 res=0
 for i in range(n):
