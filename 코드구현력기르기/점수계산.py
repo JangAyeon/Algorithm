@@ -1,5 +1,4 @@
-import sys
-sys.stdin=open("in5.txt","rt")
+#code before lecture
 
 N=int(input())
 arr=list(map(int,input().split()))
@@ -18,3 +17,17 @@ for i in range(N):
     res.append(cnt)
 
 print(sum(res))
+
+
+#code from lecture
+n=int(input())
+a=list(map(int,input().split()))
+sum=0
+cnt=0
+for x in a:
+    if x==1:
+        cnt+=1
+        sum+=cnt
+    else:
+        cnt=0
+print(sum)
