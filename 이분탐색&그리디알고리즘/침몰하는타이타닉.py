@@ -22,9 +22,11 @@ for i in range(len(arr)):
 print(cnt)
 
 #code from lecture
+from collections import deque
 n,limit=map(int,input().split())
 p=list(map(int,input().split()))
 p.sort()
+p=deque(p) #리스트 p를 deque로 변환
 cnt=0
 while p:
     if len(p)==1: 
@@ -35,7 +37,7 @@ while p:
         p.pop() #가장 무거운 사람 탈출
         cnt+=1
     else:
-        p.pop(0)
-        p.pop()
+        p.popleft() #맨 앞의 값 꺼내기
+        p.pop() #맨 뒤의 값 꺼내기
         cnt+=1
 print(cnt)
