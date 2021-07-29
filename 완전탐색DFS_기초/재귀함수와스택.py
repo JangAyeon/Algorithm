@@ -2,8 +2,9 @@
 
 def DFS(x):
     if x>0:
-        DFS(x-1)
         print(x)
+        DFS(x-1)
+        
 
 if __name__=="__main__":
     n=int(input())
