@@ -1,3 +1,4 @@
+"""
 #code before lecture : fail
 n=int(input())
 a=list(map(int,input().split()))
@@ -24,18 +25,16 @@ for i in range(len(a)):
             print("cnt: ",cnt, "j: ",j,"arr[j]: ",arr[j])
 
 
-
-
-
     print("arr:",arr)
            
 
 print(arr)
-
+"""
 
 #code from lecture
 n=int(input())
 a=list(map(int,input().split()))
+
 seq=[0]*n
 for i in range(n):
     for j in range(n):
