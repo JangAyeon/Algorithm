@@ -1,5 +1,5 @@
 #code before lecture
-"""
+
 n=int(input())
 arr=list(range(1,n+1))
 
@@ -8,7 +8,7 @@ for i in range(0,n):
         for x in arr[i:j]:
             print(x, end=" ")
         print()
-"""
+
 
 #code from lecture
 def DFS(a):
@@ -22,6 +22,7 @@ def DFS(a):
         DFS(a+1)
         ch[a]=0
         DFS(a+1)
+        
 if __name__=="__main__":
     n=int(input())
     ch=[0]*(n+1)
