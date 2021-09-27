@@ -1,33 +1,19 @@
 
-
-
-
+import sys
+sys.stdin=open("in5.txt","r")
 
 def DFS(a):
 
-    if a==(n):
-        res0=0
-        res1=0
-        for x in range(len(dp)):
-            
-            if dp[x]==1:
-                
-                res0=+arr[x]
-                print("1: ",arr[x], res0,end=",",)
-            else:
-                print("0: ",arr[x],res1,end=",")
-                res1=+arr[x]
-        if res1==res0:
-            print("#sum=",res1,res0)
-            print("성공")
+    if a==n:
+        if sum(part)==(sum(arr)-sum(part)):
+            res.append("YES")
         else:
-            print("#sum1=",res1,"sum0=",res0)
-            print("실패")
+            res.append("NO")
 
     else:
-        dp[a]=1
+        part.append(arr[a])
         DFS(a+1)
-        dp[a]=0
+        part.remove(arr[a])
         DFS(a+1)
 
 
@@ -35,9 +21,13 @@ def DFS(a):
 if __name__=="__main__":
     n=int(input())
     arr=list(map(int,input().split()))
-    dp=[0]*(n)
-
+    part=[]
+    res=[]
     DFS(0)
 
+    if "YES" in res:
+        print("YES")
+    else:
+        print("NO")
 
 
