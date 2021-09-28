@@ -1,8 +1,8 @@
 #code before lecture
-#import sys
-#sys.stdin=open("in5.txt","r")
+import sys
+sys.stdin=open("in1.txt","r")
 
-
+"""
 c,n=map(int,input().split())
 arr=[]
 res=[]
@@ -23,7 +23,7 @@ def DFS(L,w):
 
 DFS(0,0)
 print(max(res))
-
+"""
 #code from lect
 
 def DFS(L,sum,tsum):
@@ -35,8 +35,8 @@ def DFS(L,sum,tsum):
     if sum>c: #무게 제한 넘음
         return 
     if L==n: #부분 집합 하나 완성됨
-        if sum<result:
-            result+=sum
+        if sum>result:
+            result=sum
     else:
         DFS(L+1,sum+a[L],tsum+a[L])
         DFS(L+1,sum,tsum+a[L])
