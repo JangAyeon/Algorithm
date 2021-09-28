@@ -1,7 +1,5 @@
 
-import sys
-sys.stdin=open("in5.txt","r")
-
+#code before lecture
 def DFS(a):
 
     if a==n:
@@ -17,7 +15,6 @@ def DFS(a):
         DFS(a+1)
 
 
-
 if __name__=="__main__":
     n=int(input())
     arr=list(map(int,input().split()))
@@ -30,4 +27,22 @@ if __name__=="__main__":
     else:
         print("NO")
 
+#code from lecture
 
+def DFS(L,sum):
+    if sum>totall//2: #부분집합의 합이 이미 전체 합의 절반을 넘어버린 경우 고려 X
+        return
+    if L==n:
+        if sum==(total-sum): #또 다른 부분 집합
+            print("YES")
+            sys.exit(0) #프로그램 전체 종료
+    else:
+        DFS(L+1,sum+a[L]) #Level, 부분 집합에 값 더하기
+        DFS(L+1,sum)
+
+
+if__name__=="__main__":
+    n=int(input())
+    a=list(map(int,input().split()))
+    total=sum(a)
+    DFS(0,0)
