@@ -1,11 +1,13 @@
 N = int(input())
-arr = [i for i in range(1, N+1)]
-cnt = 0
+arr = [i for i in range(1, N + 1)]
 
-for i in range(0, N+1):
-    for j in range(i, N):
-        print("### i = ", i, ", j = ", j)
-        print(arr[i:j+1])
-        if sum(arr[i:j+1]) == N:
-            cnt += 1
-print(cnt)
+now, end = 0, 0
+ans = 0
+for start in range(N):
+    while end < N and now < N:
+        now += arr[end]
+        end += 1
+    if now == N:
+        ans += 1
+    now -= arr[start]
+print(ans)
