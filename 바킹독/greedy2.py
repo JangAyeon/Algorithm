@@ -9,3 +9,5 @@ def solution(n, lost, reserve):
         elif b in _lost:
             _lost.remove(b)
     return n - len(_lost)
+
+## 프로그래머스 체육복
