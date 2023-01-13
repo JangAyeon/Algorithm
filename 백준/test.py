@@ -1,25 +1,42 @@
-## https://www.acmicpc.net/problem/1697
+from collections import deque 
 
-import sys
-from collections import deque
+n = int(input())
+graph = [list(map(int, input())) for _ in range(n)]
+dx = [0,0,-1, 1]
+dy = [-1, 1, 0, 0]
 
-a,b = map(int, sys.stdin.readline().split())
-MAX = 100000
-visited = [0]*(MAX+1)
+ans = []
 
-def bfs(a):
-    que = deque([a])
+def bfs(graph, a, b):
+    graph[a][b]=0
+    cnt = 1
+    #queue = deque().append((a,b)) : 오류 발생함 이렇게 짜면 안 됨
+    que = deque()
+    que.append((a,b))
     while que:
-        x = que.popleft()
-        if x == b:
-            print(visited[x])
-            return
-        for dx in (x-1,x+1,x*2):
-            if 0<= dx <=MAX and not visited[dx]:
-                que.append(dx)
-                visited[dx] = visited[x]+1
+        x,y = que.popleft()
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            #print(nx, ny)
+            if nx < 0 or nx >= n or ny <0 or ny >= n:
+                #print("탈출")
+                continue
+            if graph[nx][ny]:
+                graph[nx][ny]=0
+                que.append((nx,ny))
+                cnt+=1
+
+    return cnt
 
 
 
 
-bfs(a)
+for i in range(n):
+    for j in range(n):
+        if graph[i][j]:
+            ans.append(bfs(graph, i, j))
+
+print(len(ans))
+for i in sorted(ans):
+    print(i)
