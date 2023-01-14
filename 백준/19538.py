@@ -29,14 +29,14 @@ def bfs():
         current = que.popleft()
         for next in graph[current]:
             if not visited[next]:
-                cnt[next]+=1
+                cnt[next]+=1 #
                 print(next, "방문안함")
                 if cnt[next] >= (len(graph[next])+1)//2:
                     print("큐 추가", ans[current])
                     visited[next]=1
                     ans[next] = ans[current]+1
                     que.append(next)
-            print("친구 : ",next)
+            print("친구 : ",next, ans)
     
 
 print("입력 받기")
