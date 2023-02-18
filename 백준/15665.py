@@ -4,7 +4,7 @@ import sys
 input= sys.stdin.readline
 n,m = map(int, input().split())
 arr=sorted(list(set(map(int, input().split()))))
-#print(n,m,arr)
+print(n,m,arr)
 ans=[]
 
 
