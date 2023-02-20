@@ -3,7 +3,7 @@ input = sys.stdin.readline
 
 L,C = map(int, input().split())
 arr = sorted(list(input().split()))
-print(L,C,arr)
+#print(L,C,arr)
 
 def solution(len, idx, c_cnt, v_cnt, text):
     if len == L:
