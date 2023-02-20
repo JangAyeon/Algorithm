@@ -1,3 +1,6 @@
+# 문제 : https://www.acmicpc.net/problem/1941
+# 재귀 알고리즘으로 조합 구하기 : https://www.youtube.com/watch?v=q0s6m7AiM7o
+
 from collections import deque
 import sys
 input = sys.stdin.readline
@@ -6,6 +9,7 @@ arr = [list(input()) for _ in range(5)]
 cnt = 0
 dy = [1,-1,0,0]
 dx = [0,0,1,-1]
+print(arr)
 
 def check_s(cur):
     s_cnt = 0
