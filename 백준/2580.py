@@ -1,50 +1,45 @@
-import sys
-graph = []
-blank = []
-
-for i in range(9):
-    graph.append(list(map(int, sys.stdin.readline().rstrip().split())))
-
-for i in range(9):
-    for j in range(9):
-        if graph[i][j] == 0:
-            blank.append((i, j))
-
-def checkRow(x, a):
+def chk_row(n, x):
     for i in range(9):
-        if a == graph[x][i]:
+        if a[x][i] == n:
             return False
     return True
 
-def checkCol(y, a):
+
+def chk_col(n, y):
     for i in range(9):
-        if a == graph[i][y]:
+        if a[i][y] == n:
             return False
     return True
 
-def checkRect(x, y, a):
-    nx = x // 3 * 3
-    ny = y // 3 * 3
+
+def chk_rect(x, y, n):
+    x = x // 3 * 3
+    y = y // 3 * 3
     for i in range(3):
         for j in range(3):
-            if a == graph[nx+i][ny+j]:
+            if a[x + i][y + j] == n:
                 return False
     return True
 
 
-def dfs(idx):
-    if idx == len(blank):
+def dfs(cnt):
+    if cnt == len(zero):
         for i in range(9):
-            print(*graph[i])
-        exit(0)
-
+            print(*a[i])
+        exit()
+    x = zero[cnt][0]
+    y = zero[cnt][1]
     for i in range(1, 10):
-        x = blank[idx][0]
-        y = blank[idx][1]
+        if chk_col(i, y) and chk_rect(x, y, i) and chk_row(i, x):
+            a[x][y] = i
+            dfs(cnt + 1)
+            a[x][y] = 0
 
-        if checkRow(x, i) and checkCol(y, i) and checkRect(x, y, i):
-            graph[x][y] = i
-            dfs(idx+1)
-            graph[x][y] = 0
 
+a = [list(map(int, input().split()))for _ in range(9)]
+zero = []
+for i in range(9):
+    for j in range(9):
+        if a[i][j] == 0:
+            zero.append([i, j])
 dfs(0)
