@@ -5,29 +5,15 @@ input = sys.stdin.readline
 
 n = int(input().strip())
 words = [input().strip() for _ in range(n)]
-letters = [list(set(word)) for word in words]
-#print(letters)
-res = 0
+res = n
 
 for word in words:
-    letter = list(set(word))
-    visited=[False]*len(letter)
-    prev = letter.index(word[0])
-    cnt = 0
-    for i in word:
-        idx = letter.index(i)
-        if not visited[idx]:
-            visited[idx]=True
-            cnt+=1
-        else:
-            if idx!=prev:
-                #print("break")
-                break
-            else:
-                cnt+=1
-        #print("i",i ,"prev ",prev, "idx ",idx, "visited", visited)
-        prev=idx
-    if cnt==len(word):
-        res+=1
-        #print(word,res)
+    for i in range(0, len(word)-1):
+        if word[i]==word[i+1]: 
+        # 연속적으로 같은 글자 나온 경우
+            pass
+        elif word[i] in word[i+1:]:
+        # 연속적으로 같은 글자가 나오지 않고 해당 글자가 뒤에 한 번 더 나오는 경우
+            res-=1
+            break
 print(res)
