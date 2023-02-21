@@ -1,44 +1,31 @@
-import sys
-input = sys.stdin.readline
+n = int(input())
+b = input().split()
+visited = [False] * 10 # 0 ~ 9
+mx,mn ="",""
 
-arr = [list(map(int, input().split())) for _ in range(9)]
-zero = [(x,y) for x in range(9) for y in range(9) if arr[x][y] == 0]
-#print(arr, zero)
+def possible(i,j,k):
+    if k=="<":
+        return i<j
+    elif k==">":
+        return i>j
+
+def solution(count, s):
+    global mn,mx
+    if count == n+1:
+        if len(mn)==0:
+            mn=s
+        else:
+            mx=s
+        return
+    
+    for i in range(10): # 0~9
+        if not visited[i]:
+            if count == 0 or possible(s[-1], str(i), b[count-1]):
+                visited[i]=True
+                solution(count+1, s+str(i))
+                visited[i]=False
 
 
-def check_x(n, x):
-    for i in range(9):
-        if arr[x][i] == n:
-            return False
-    return True
-
-
-def check_y(n, y):
-    for i in range(9):
-        if arr[i][y] == n:
-            return False
-    return True
-
-def check_rect(i,x,y):
-    x = x//3*3
-    y=y//3*3
-    for dx in range(3):
-        for dy in range(3):
-            if arr[x+dx][y+dy]==i:
-                return False
-    return True
-
-def dfs(cnt):
-    if cnt == len(zero):
-        for i in range(9):
-            print(*arr[i])
-        exit()
-    x = zero[cnt][0]
-    y = zero[cnt][1]
-    for i in range(1, 10):
-        if check_y(i, y) and check_rect(i, x, y) and check_x(i, x):
-            arr[x][y] = i
-            dfs(cnt + 1)
-            arr[x][y] = 0 # i가 정답 아닐 수도 있으니 0으로!
-
-dfs(0)
+solution(0,"")
+print(mx)
+print(mn)
