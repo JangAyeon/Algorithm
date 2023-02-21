@@ -1,23 +1,29 @@
-def chk_row(n, x):
+import sys
+input = sys.stdin.readline
+
+arr = [list(map(int, input().split())) for _ in range(9)]
+zero = [(x, y) for x in range(9) for y in range(9) if arr[x][y] == 0]
+
+def check_x(n, x):
     for i in range(9):
-        if a[x][i] == n:
+        if arr[x][i] == n:
             return False
     return True
 
 
-def chk_col(n, y):
+def check_y(n, y):
     for i in range(9):
-        if a[i][y] == n:
+        if arr[i][y] == n:
             return False
     return True
 
 
-def chk_rect(x, y, n):
+def check_rect(x, y, n):
     x = x // 3 * 3
     y = y // 3 * 3
     for i in range(3):
         for j in range(3):
-            if a[x + i][y + j] == n:
+            if arr[x + i][y + j] == n:
                 return False
     return True
 
@@ -25,21 +31,16 @@ def chk_rect(x, y, n):
 def dfs(cnt):
     if cnt == len(zero):
         for i in range(9):
-            print(*a[i])
+            print(*arr[i])
         exit()
     x = zero[cnt][0]
     y = zero[cnt][1]
     for i in range(1, 10):
-        if chk_col(i, y) and chk_rect(x, y, i) and chk_row(i, x):
-            a[x][y] = i
+        if check_y(i, y) and check_rect(x, y, i) and check_x(i, x):
+            arr[x][y] = i
             dfs(cnt + 1)
-            a[x][y] = 0
+            arr[x][y] = 0 # i가 정답 아닐 수도 있으니 0으로!
 
 
-a = [list(map(int, input().split()))for _ in range(9)]
-zero = []
-for i in range(9):
-    for j in range(9):
-        if a[i][j] == 0:
-            zero.append([i, j])
+#print(" ")
 dfs(0)
