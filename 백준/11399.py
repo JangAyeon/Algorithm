@@ -12,4 +12,4 @@ for i in range(0,len(arr)):
     res+=sum(arr[:i+1])
 
 
-print(n, arr,res)
+print(res)
