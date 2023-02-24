@@ -19,8 +19,8 @@ def getDiff(start, link):
 for i in range(1, n//2+1):
     start =  tuple(combinations(idx, i))
     link = tuple(combinations(idx, n-i))
-    #print("start", start)
-    #print("link", link)
+    print("start", start)
+    print("link", link)
     length = len(start)
     for i in range(length):
         ans = min(ans, getDiff(start[i], link[length-1-i]))
