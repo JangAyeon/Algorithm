@@ -1,55 +1,39 @@
-def find(parent, x):
-    if parent[x] != x:
-        parent[x] = find(parent, parent[x])
-    return parent[x]
+import sys
+input = sys.stdin.readline
 
-def union(parent, a, b,truth):
-    a = find(parent, a)
-    b = find(parent, b)
+n,m = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(n)]
+dx=[1,-1,0,0]
+dy=[0,0,1,-1]
+visited = [[False]*m for _ in range(n)]
+max_pos = max(map(max, arr))
+ans = 0
 
-    if a in truth and b in truth:
-        return
-
-    if a in truth:
-        parent[b] = a
-    
-    elif b in truth:
-        parent[a] = b
-    
+def dfs(x, y, step, total):
+    global ans
+    if ans>=total+max_pos*(3-step):
+        return 
+    if step == 3:
+        ans = max(ans, total)
     else:
-        if a < b:
-            parent[b] = a
-        else:
-            parent[a] = b
-
-    #print(a, b)
-    #print(truth, parent)
-
-
-def sol():
-    N, M = map(int, input().split())
-    truth = list(map(int, input().split()))[1:]
+        for i in range(4):
+            nx, ny = x + dx[i], y+dy[i]
+            if 0<=nx<n and 0<=ny<m and not visited[nx][ny]:
+                if step==1:
+                    visited[nx][ny]=True
+                    dfs(x,y,step+1,total+arr[nx][ny])
+                    visited[nx][ny]=False
+                visited[nx][ny]=True
+                dfs(nx,ny,step+1,total+arr[nx][ny])
+                visited[nx][ny]=False
 
 
-    # 진실을 아는 집합은 루트 노드가 0인 집합으로 표시
-    parent = list(range(N+1))
 
-    parties = []
-    for _ in range(M):
-        party = list(map(int, input().split()))[1:]
-        # 같은 파티의 사람들을 모두 같은 집합으로 합침
-        for i in range(len(party) - 1):
-            union(parent, party[i], party[i+1], truth)
-        parties.append(party)
 
-    cnt = 0  # 거짓말을 할 수 있는 파티 수
-    for party in parties:
-        for p in party:
-            if find(parent, p) in truth:
-                break
-        else:
-            cnt += 1
-    return cnt
- 
+for x in range(len(arr)):
+    for y in range(len(arr[x])):
+        visited[x][y]=True
+        dfs(x,y,0, arr[x][y])
+        visited[x][y]=False
 
-print(sol())
+print(ans)
