@@ -2,10 +2,12 @@ import sys
 input = sys.stdin.readline
 
 n = int(input().strip())
-num = [1]*10
+ans = [1]*10
 
 for i in range(n-1):
-    for j in range(1, 10):
-        num[j] += num[j-1]
+    for j in range(1,10):
+       ans[j]+=ans[j-1]
 
-print(sum(num)%10007)
+
+    
+print(sum(ans)%10007)

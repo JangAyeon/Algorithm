@@ -1,29 +1,13 @@
-# 5397
-
 import sys
 input = sys.stdin.readline
-from collections import deque 
 
-n =int(input().strip())
-arr = [input().strip() for _ in range(n)]
+n = int(input().strip())
+ans = [1]*10
 
-str_l = deque()
-str_r = deque()
+for i in range(n-1):
+    for j in range(1,10):
+       ans[j]+=ans[j-1]
 
-for word in arr:
-    str_l = deque()
-    str_r = deque()
-    for letter in word:
-        if letter == "<":
-            if (str_l):
-                str_r.append(str_l.pop())
-        elif letter == ">":
-            if (str_r):
-                str_l.append(str_r.pop())
-        elif letter =="-":
-            if (str_l):
-                str_l.pop()
-        else:
-            str_l.append(letter)
-    ans = list(str_l) + list(reversed(str_r))
-    print("".join(ans))
+
+    
+print(sum(ans)%10007)
