@@ -1,24 +1,31 @@
+# 이중우선순위큐 : https://school.programmers.co.kr/learn/courses/30/lessons/42628
+# heapq 메서드 : https://python.flowdas.com/library/heapq.html 
+
+
 import heapq
 
 def solution(operations):
-    min_heap = []
-    for value in operations:
-        order, data = value.split()
-        data = int(data)
-        # 최댓값 삭제
-        if order == "D" and data == 1:
-            if min_heap:
-                max_value = max(min_heap)
-                min_heap.remove(max_value)
-        # 최솟값 삭제
-        elif order == "D" and data == -1:
-            if min_heap:
-                heapq.heappop(min_heap)
-        # 큐 데이터 삽입
+    que = []
+    for i in operations:
+        op, data = i.split()
+        if op == "I":
+            heapq.heappush(que,int(data))
         else:
-            heapq.heappush(min_heap, data)
-    
-    # heap이 비어있는 경우
-    if not min_heap:
-        return [0, 0]
-    return max(min_heap), min_heap[0]
+            if len(que)>0:
+                if int(data)==1:
+                    que.pop(que.index(heapq.nlargest(1,que)[0]))
+                elif int(data) == -1:
+                    que.pop(que.index(heapq.nsmallest(1,que)[0])) # heapq.heappop(que) : 최소값 pop
+
+    if len(que)>0:
+        answer = [heapq.nlargest(1,que)[0], heapq.nsmallest(1,que)[0]]
+    else:
+        answer=[0,0]
+    return answer
+
+
+
+testcase = [["I 16", "I -5643", "D -1", "D 1", "D 1", "I 123", "D -1"],["I -45", "I 653", "D 1", "I -642", "I 45", "I 97", "D 1", "D -1", "I 333"]]
+
+for test in testcase:
+    print(solution(test))
