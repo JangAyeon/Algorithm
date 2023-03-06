@@ -1,28 +1,32 @@
-def dfs(idx, sheep, wolf, possible):
-    global g_info, answer, graph
-    if g_info[idx] == 0:
-        sheep += 1
-        answer = max(answer, sheep)
-    else:
-        wolf += 1
-        
-    if wolf >= sheep:
-        return 
-    
-    possible.extend(graph[idx])
-    for p in possible:
-        dfs(p, sheep, wolf, [i for i in possible if i != p])
-    
+
+
+
+
 def solution(info, edges):
-    global answer, g_info, visited, graph
-    answer = 0
-    g_info = info
-    n = len(info)
-    graph = [[] for _ in range(n)]
-    
-    for a, b in edges:
-        graph[a].append(b)
+    visited = [False] * len(info)
+    answer = []
+
+
+    def dfs(sheep, wolf):
+        if sheep>wolf:
+            answer.append(sheep)
+        else:
+            return
         
-    
-    dfs(0, 0, 0, [])
-    return answer
+        for parent, child in edges:
+            if visited[parent] and not visited[child]:
+                visited[child]=True
+                if info[child] == 0: # sheep인 경우
+                    dfs(sheep+1, wolf)
+                else:
+                    dfs(sheep, wolf+1)
+                visited[child]=False
+    # 루트 노드에서 시작
+    visited[0]=True
+    dfs(1, 0) # 루트 노드는 언제나 항상 양
+    return max(answer)
+
+
+testcase = [[[0,0,1,1,1,0,1,0,1,0,1,1],	[[0,1],[1,2],[1,4],[0,8],[8,7],[9,10],[9,11],[4,3],[6,5],[4,6],[8,9]]]	, [[0,1,0,1,1,0,1,0,0,1,0],	[[0,1],[0,2],[1,3],[1,4],[2,5],[2,6],[3,7],[4,8],[6,9],[9,10]]]]
+for info, edges in testcase:
+    print(solution(info,edges))
