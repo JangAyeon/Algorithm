@@ -21,9 +21,9 @@ def get_upper_bound(left, right, target, house):
         mid = (left + right)//2
         router = count_router(mid, house)
 
-        if router >= target:
+        if router >= target: # router 수 많음 - router 사이 거리 좁음 => router 사이 거리 넓히기
             left = mid + 1
-        else:
+        else: # router 수 적음 - router 사이 거리 넓음 => router 사이 거리 좁히기
             right = mid - 1
     return left
 
