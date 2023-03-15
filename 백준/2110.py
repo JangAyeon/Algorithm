@@ -1,32 +1,35 @@
 import sys
 input = sys.stdin.readline
 
-n, c =map(int, input().split())
-house = sorted([int(input()) for _ in range(n)])
+n, c = map(int, input().split())
+house = sorted([int(input().strip()) for _ in range(n)])
 
-
-def count_router(dist, house):
-    # 첫번째 집에는 무조건 공유기 설치
-    count = 1
+def get_count(dist, house):
+    count=1
     pos = house[0]
 
-    for next_pos in house:
-        if next_pos - pos >= dist: # 거리가 dist 넘는 경우 공유기 설치
+    for next in house:
+        if next - pos >= dist: # 이전 공유기와 지금 공유기의 거리가 제시된 거리 넘는 경우 설치
+            pos = next
             count+=1
-            pos = next_pos
     return count
 
-def get_upper_bound(left, right, target, house):
+
+def get_bound(left, right, limit, house):
+    
     while left <= right:
         mid = (left + right)//2
-        router = count_router(mid, house)
+        count = get_count(mid, house)
 
-        if router >= target: # router 수 많음 - router 사이 거리 좁음 => router 사이 거리 넓히기
-            left = mid + 1
-        else: # router 수 적음 - router 사이 거리 넓음 => router 사이 거리 좁히기
-            right = mid - 1
+        if count>=limit:
+            # 라우터 갯수 많음 = 거리 너무 좁다는 소리 => 거리를 늘려야 함
+            left = mid +1
+        else:
+            # 라우터 갯수 적음 = 거리 너무 넓다는 소리 => 거리를 좁혀야 함
+            right = mid -1
     return left
 
 
 
-print(get_upper_bound(1, house[-1]-house[0], c, house) - 1)
+
+print(get_bound(1, house[-1]-house[0], c, house)-1)
