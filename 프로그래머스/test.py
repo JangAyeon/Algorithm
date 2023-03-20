@@ -1,32 +1,37 @@
-import sys
-input = sys.stdin.readline
+from collections import deque
 
-n, c =map(int, input().split())
-house = sorted([int(input()) for _ in range(n)])
+def solution(m,n,picture):
+    dx = [-1,1,0,0]
+    dy = [0,0,-1,1]
+    que = deque()
+    max_size = 0
+    area = 0
+    for i in range(m):
+        for j in range(n):
+            if not picture[i][j]: # 방문한 곳
+                continue
+            else:
+                area +=1
+                count = 0
+                color = picture[i][j]
+                picture[i][j] = 0
+                que.append([i,j])
+
+                while que:
+                    count+=1
+                    x, y =  que.popleft()
+                    for k in range(4):
+                        nx, ny = x + dx[k], y + dy[k]
+                        if 0<= nx <m and 0<= ny < n and picture[nx][ny]==color:
+                            picture[nx][ny]=0
+                            que.append([nx, ny])
+                max_size =max(count, max_size)
+    return [area, max_size]
 
 
-def count_router(dist, house):
-    # 첫번째 집에는 무조건 공유기 설치
-    count = 1
-    pos = house[0]
-
-    for next_pos in house:
-        if next_pos - pos >= dist: # 거리가 dist 넘는 경우 공유기 설치
-            count+=1
-            pos = next_pos
-    return count
-
-def get_upper_bound(left, right, target, house):
-    while left <= right:
-        mid = (left + right)//2
-        router = count_router(mid, house)
-
-        if router >= target:
-            left = mid + 1
-        else:
-            right = mid - 1
-    return left
 
 
 
-print(get_upper_bound(1, house[-1]-house[0], c, house) - 1)
+testcase = [[6,4, [[1, 1, 1, 0], [1, 2, 2, 0], [1, 0, 0, 1], [0, 0, 0, 1], [0, 0, 0, 3], [0, 0, 0, 3]]],[6,4, [[1, 1, 1, 0], [1, 1, 1, 0], [0, 0, 0, 1], [0, 0, 0, 1], [0, 0, 0, 1], [0, 0, 0, 1]]]]
+for m,n,picture in testcase:
+    print(solution(m,n,picture)) #[4,5], [2, 6] 
