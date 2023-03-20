@@ -38,7 +38,6 @@ print(get_bound(1, house[-1]-house[0], c, house)-1)
 
 
 # 프로그래머스 기둥과 보
-
 def check(answer):
     for x, y, a in answer:
         if a == 0: # 기둥
