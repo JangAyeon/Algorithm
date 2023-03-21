@@ -41,13 +41,14 @@ dy = [0, 1, 0, -1]
 
 
 def solution():
-    direction = 1  # 초기 방향
+    direction = 1  # 초기 방향 - 먼저 뱀은 몸길이를 늘려 머리를 다음칸에 위치
     time = 1  # 시간
     x, y = 0, 0  # 초기 뱀 위치
     visited = deque([[x, y]])  # 방문 위치
     graph[x][y] = 2
     while True:
         x, y = x + dx[direction], y + dy[direction]
+        print("n",x,y)
         if 0 <= y < n and 0 <= x < n and graph[x][y] != 2:
             if not graph[x][y] == 1:  # 사과가 없는 경우
                 temp_x, temp_y = visited.popleft()
