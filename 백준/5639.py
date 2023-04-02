@@ -18,7 +18,7 @@ def solution(subList):
     tempL, tempR = [], []
     mid = subList[0] # 루트 노드
 
-    flag = False
+    flag = False # 루트 노드 기준 리스트를 왼/오 트리로 나눌 수 있는지 여부 판정
     for i in range(1, len(subList)):
         if subList[i]>mid:
             flag = True
