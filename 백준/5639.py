@@ -1,35 +1,37 @@
 import sys
+sys.setrecursionlimit(10**6)
 input = sys.stdin.readline
-sys.setrecursionlimit(10**5)
 
+# 무한 입력
 arr = []
 while True:
-    try:
+    try:    
         arr.append(int(input().strip()))
     except:
         break
-#print(arr)
 
-def postOrder(subTree):
-    if len(subTree) == 0:
+def solution(subList):
+
+    if len(subList) == 0: # 트리 종결
         return
+    
     tempL, tempR = [], []
-    mid = subTree[0] # 루트
-    # 루트보다 커지는 곳 찾기
+    mid = subList[0] # 루트 노드
+
     flag = False
-    for i in range(1, len(subTree)):
-        if subTree[i]>=mid:
-            tempL = subTree[1:i] # idx : 1 ~ i-1
-            tempR = subTree[i:] # idx : i ~
+    for i in range(1, len(subList)):
+        if subList[i]>mid:
             flag = True
-            break
+            tempL = subList[1:i] # 루트 노트 빼야함
+            tempR = subList[i:]
+            break # 더이상 리스트에서 왼/오 트리 나눌 필요 없음
 
-    if not flag: # 루트보다 커지는 경우 없음
-        tempL = subTree[1:]
+    if not flag: # 분할 없는 경우
+        tempL=subList[1:] # tempR = []로 초기화 상태랑 동일 해서 그냥 안씀...
 
-    postOrder(tempL)
-    postOrder(tempR)
+    ## 후위 순회 
+    solution(tempL)
+    solution(tempR)
     print(mid)
 
-
-postOrder(arr)
+solution(arr)
