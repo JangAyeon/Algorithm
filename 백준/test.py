@@ -1,27 +1,55 @@
 import sys
 input = sys.stdin.readline
-sys.setrecursionlimit(10**9)
 
-def countPoint(root):
-    visited[root]=1
-    for i in tree[root]:
-        if not visited[i]:
-            countPoint(i)
-            visited[root]+=visited[i]
+def checkEnd(n,m):
+    if n==0 and m==0:
+        return True
+    else:
+        return False
 
+def printResult(case, count):
+    if count == 0:
+        print("Case {}: No trees.")
+    elif count == 1:
+        print("Case {}: There is one tree.".format(case))
+    else: 
+        print("Case {}: A forest of {} trees.".format(case, count))
 
+def getNode(n,m):
+    graph = [[] for _ in range(n+1)]
+    visitied = [False]*(n+1)
+    count = 0
+    for _ in range(m):
+        a,b = map(int, input().split())
+        graph[a].append(b)
+        graph[b].append(a)
 
-n, r, q = map(int, input().split())
-tree = [[] for _ in range(n+1)]
-visited = [0]*(n+1)
+    return graph, visitied, count
 
-for i in range(n-1):
-    a, b = map(int, input().split())
-    tree[a].append(b)
-    tree[b].append(a)
+def dfs(prev, curr):
+    visited[curr]=True
+    for next in graph[curr]:
+        if next == prev:
+            continue
+        if visited[next]:
+            return False
+        if not dfs(curr, next):
+            return False
+    return True
+            
 
-countPoint(r)
-
-for i in range(q):
-    u = int(input())
-    print(visited[u])
+case = 0
+while True:
+    case += 1
+    n,m=map(int, input().split())
+    flag = checkEnd(n,m)
+    if flag:
+        #print("종료")
+        break
+    else:
+        graph, visited, count = getNode(n,m)
+        for i in range(1, n+1):
+            if not visited[i]:
+                if dfs(0,i):
+                    count+=1
+        printResult(case, count)
