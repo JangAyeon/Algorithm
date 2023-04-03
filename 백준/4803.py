@@ -33,8 +33,8 @@ def dfs(prev, curr):
             continue
         if visited[next]:
             return False
-        if not dfs(curr, next):
-            return False
+        if not dfs(curr, next): # 트리 순회 가능한 경우 
+            return False 
     return True
             
 
@@ -44,7 +44,6 @@ while True:
     n,m=map(int, input().split())
     flag = checkEnd(n,m)
     if flag:
-        #print("종료")
         break
     else:
         graph, visited, count = getNode(n,m)
