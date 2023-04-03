@@ -3,17 +3,17 @@ input = sys.stdin.readline
 sys.setrecursionlimit(10**9)
 
 def countPoint(root):
-    count[root]=1
+    visited[root]=1
     for i in tree[root]:
-        if not count[i]:
+        if not visited[i]:
             countPoint(i)
-            count[root]+=count[i]
+            visited[root]+=visited[i]
 
 
 
 n, r, q = map(int, input().split())
 tree = [[] for _ in range(n+1)]
-count = [0]*(n+1)
+visited = [0]*(n+1)
 
 for i in range(n-1):
     a, b = map(int, input().split())
@@ -24,4 +24,4 @@ countPoint(r)
 
 for i in range(q):
     u = int(input())
-    print(count[u])
+    print(visited[u])
