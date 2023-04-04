@@ -9,7 +9,7 @@ def checkEnd(n,m):
 
 def printResult(case, count):
     if count == 0:
-        print("Case {}: No trees.")
+        print("Case {}: No trees.".format(case))
     elif count == 1:
         print("Case {}: There is one tree.".format(case))
     else: 
