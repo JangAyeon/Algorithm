@@ -1,5 +1,4 @@
 # https://school.programmers.co.kr/learn/courses/30/lessons/12902
-# 시간 초과
 
 def solution(n):
     
