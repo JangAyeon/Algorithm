@@ -9,9 +9,9 @@ party = [set(map(int, input().split()[1:])) for _ in range(m)]
 
 
 for _ in range(m):
-    for v  in party:
-        if (v & know):
-            know = know | v
+    for  p  in party:
+        if (p & know):
+            know = know | p
 
 answer  = 0
 for p in party:
