@@ -1,14 +1,13 @@
 import sys
 input = sys.stdin.readline
 
-N = int(input().strip())
-array = []
-for _ in range(N):
-    str = input().strip().split()
-    array.append([str[0], int(str[1]),int(str[2]), int(str[3])])
+n = int(input().strip())
+arr = []
 
+for _ in range(n):
+    temp = input().strip().split()
+    arr.append([temp[0], int(temp[1]), int(temp[2]), int(temp[3])])
 
-array.sort(key = lambda x : (-x[1],x[2],-x[3],x[0]))
-
-for a in array:
-    print(a[0])
+arr.sort(key = lambda x : (-x[1], +x[2],-x[3],x[0]))
+for i in arr:
+    print(i[0])
