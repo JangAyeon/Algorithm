@@ -4,7 +4,7 @@ def isAble(answer):
             #바닥 위에 있거나 
             if y == 0:
                 continue
-            #보의 한쪽 끝 부분 위에 있거나 - 이 조건 틀렸었음  
+            #보의 한쪽 끝 부분 위에 있거나  
             elif [x-1,y,1] in answer or [x,y,1] in answer:
                 continue
             #다른 기둥 위에 있어야 
@@ -16,7 +16,7 @@ def isAble(answer):
 
         else: # 보
 
-            # 한쪽 끝 부분이 기둥 위에 있음
+            # 한쪽 끝 부분이 기둥 위에 있음 
             if ([x,y-1,0] in answer) or ([x+1,y-1,0] in answer):
                 #print("한쪽 끌이 기둥 위에")
                 continue
