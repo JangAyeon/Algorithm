@@ -3,16 +3,9 @@
 def solution(number, k):
     arr = []
     for i in number:
-        if len(arr) == 0:
-            arr.append(i)
-            continue
-        if k>0:
-            while arr[-1]<i:
-                arr.pop()
-                k-=1
-                if len(arr)==0 or k<1:
-                    break
+        while len(arr)>0 and k>0 and arr[-1]<i:
+            arr.pop()
+            k-=1
         arr.append(i)
-    #print("".join(arr))
-    arr  = arr[:-k] if k>0 else arr
+    arr = arr[:-k] if k>0 else arr
     return "".join(arr)
