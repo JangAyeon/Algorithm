@@ -2,10 +2,15 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-arr1 = sorted(list(map(int, input().split())))
-arr2 = sorted(list(map(int, input().split())),reverse = True)
+arr1 = list(map(int, input().split()))
+arr2 = list(map(int, input().split()))
 answer = 0
 
-for i in range(len(arr1)):
-    answer +=(arr1[i]*arr2[i])
+while(arr1):
+    a = min(arr1) 
+    b = max(arr2)
+    answer += a*b
+    arr1.remove(a)
+    arr2.remove(b)
+    
 print(answer)
