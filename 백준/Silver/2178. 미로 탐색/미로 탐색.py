@@ -1,34 +1,37 @@
 import sys
 from collections import deque
-
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
-graph = []
-
-for _ in range(n):
-    graph.append(list(map(int, input().rstrip()))) # readline의 경우 맨 뒤에 '\n'까지 입력받으므로 제거해줘야 함
+row, col = map(int, input().split())
+graph = [list(map(int, input().strip())) for _ in range(row)]
+#print(row, col, graph)
 
 # 상하좌우
 dx = [-1, 1, 0, 0] 
 dy = [0, 0, -1, 1]
 
-def bfs(x, y):
-    
-    queue = deque()
-    queue.append((x,y))
-
-    while queue:
-        x, y = queue.popleft()
-
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-
-            if 0 <= nx < n and 0 <= ny < m and graph[nx][ny] == 1:
-                queue.append((nx, ny))
+def bfs(x,y):
+    que = deque()
+    que.append([x,y])
+    while que:
+        x,y = que.popleft()
+        for idx in range(4):
+            nx, ny = x + dx[idx], y + dy[idx]
+            if 0<=nx<row and 0<=ny<col and graph[nx][ny]==1:
+                que.append((nx, ny))
                 graph[nx][ny] = graph[x][y] + 1
-    
-    return graph[n-1][m-1]
+                    
+    return graph[row-1][col-1]
+
 
 print(bfs(0,0))
+
+"""
+4 6
+101111
+101010
+101011
+111011
+
+15
+"""
