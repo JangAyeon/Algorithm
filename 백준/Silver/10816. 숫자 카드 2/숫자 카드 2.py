@@ -1,38 +1,34 @@
-import sys
-n = int(input())
-arr = sorted(list(map(int,input().split())))
-m = int(input())
-search = list(map(int,input().split()))
+from sys import stdin
+_ = stdin.readline()
+N = sorted(map(int,stdin.readline().split()))
+_ = stdin.readline()
+M = map(int,stdin.readline().split())
 
-def binary_search(arr, target, start, end):
-    if start>end:
-        return 0 # 존재하지 않음
-        
-    mid = (start + end)//2
-    
-    # 찾은 경우 갯수 반환
-    if arr[mid] == target:
-        return count[target]
-        
-    # 중간점의 값보다 찾는 값이 작은 경우 왼쪽 확인 필요
-    elif arr[mid]>target: # 줄여야함
-        return binary_search(arr, target, start, mid-1)
-    # 중간점의 값보다 찾는 값이 큰 경우 오른쪽 확인 필요
-    else: # 키워야 함
-        return binary_search(arr, target,mid+1, end)
-
-count={}
-for i in arr:
-    if i in count:
-        count[i]+=1
+def binary(l, N, start, end):
+    if start > end:
+        return 0
+    m = (start+end)//2
+    if l == N[m]:
+        i, j = 1, 1
+        while m-i >= start:
+            if N[m-i] != N[m]:
+                break
+            else: i += 1
+        while m+j <= end:
+            if N[m+j] != N[m]:
+                break
+            else: j += 1
+        return i + j - 1
+    elif l < N[m]:
+        return binary(l, N, start, m-1)
     else:
-        count[i]=1
+        return binary(l, N, m+1, end)
 
-answer = []
-#print(count)
-for num in search:
-    print(binary_search(arr, num, 0, len(arr)-1), end = " ")
-    
+n_dic = {}
+for n in N:
+    start = 0
+    end = len(N) - 1
+    if n not in n_dic:
+        n_dic[n] = binary(n, N, start, end)
 
-        
-        
+print(' '.join(str(n_dic[x]) if x in n_dic else '0' for x in M ))
