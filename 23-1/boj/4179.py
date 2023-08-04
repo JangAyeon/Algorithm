@@ -61,7 +61,7 @@ def jh_bfs(que):
                     que.append([nx, ny])
                     
  
-# BFS 돌기
+# BFS 돌기 위한 시작점인 불과 지훈 위치 포착
 for i in range(row):
     for j in range(col):
         #print(i,j, graph[i][j])
@@ -72,6 +72,8 @@ for i in range(row):
         elif graph[i][j] == "J":
             visited[i][j] = 1 
             Jque.append([i,j])
+
+# 불 BFS 돌고 지훈 BFS 돌기 
 fire_bfs(Fque)
 jh_bfs(Jque)
 escape = isEscape(visited, graph)
