@@ -141,3 +141,7 @@ Empty
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://programmers.co.kr/learn/challenges
+>
+## 놓친점
+* 그래프 초기 cost 값은 양방향임
+* floyd 그래프 알고리즘
