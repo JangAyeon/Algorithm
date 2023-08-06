@@ -1,3 +1,13 @@
+def create_zip(count, chunk, result):
+    
+    if count>=2:
+        result +=str(count)+chunk
+    else:
+        result+=chunk
+    
+    return result
+    
+
 def solution(s):
     min_len = len(s)
     for unit in range(1, (len(s)//2)+1):
@@ -6,7 +16,7 @@ def solution(s):
         result = ""    
 
         # 첫 탐색 단위
-        previous = s[0:unit]
+        chunk = s[0:unit]
 
         # 동일한 탐색 단위의 개수
         count = 1
@@ -18,25 +28,18 @@ def solution(s):
             now = s[idx:idx+unit]
 
             # 현재 탐색 단위가 이전 탐색 단위와 같다면
-            if (now == previous):
+            if (now == chunk):
                 count += 1
             # 현재 탐색 단위가 이전 탐색 단위와 다르다면
             else:
-                if (count >= 2):
-                    result += str(count) + previous
-                else:
-                    result += previous
-                previous = now
+                result = create_zip(count, chunk, result)
+                chunk = now
                 count = 1
 
         # 남아있는 문자열에 대해 처리
-        if (count >= 2):
-            result += str(count) + previous
-        else:
-            result += previous    
+        result = create_zip(count, chunk, result)
 
         # 탐색 단위별로 압축 문자열의 길이를 비교해, 최소 압축 문자열의 길이를 저장
         min_len = min(min_len, len(result))
 
     return min_len
-    
