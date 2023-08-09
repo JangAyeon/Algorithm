@@ -24,11 +24,7 @@ def createLastDate(period, yyyy,mm,dd):
             m=m%12
         if m==0: # 추가된 달이 모두 년수로 똑나눠 떨어진 경우
             m=12
-    if d==0:
-        d = 28
-        m-=1
-        if m==0:
-            m=12
+
             
     #print(y,m,d)
     return  y, m,d
