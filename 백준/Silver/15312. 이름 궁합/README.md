@@ -36,3 +36,8 @@
 
  <p>이름 궁합의 결과를 두 자리의 숫자로 출력한다. (십의 자리가 0이어도 두 자리로 출력한다)</p>
 
+
+### 풀이 공부
+[구현 풀이](https://velog.io/@dydgjs2016/%EB%B0%B1%EC%A4%80-15312-%EC%9D%B4%EB%A6%84-%EA%B6%81%ED%95%A9) 공부
+[DP 풀이](https://lazypazy.tistory.com/122) 공부
+
