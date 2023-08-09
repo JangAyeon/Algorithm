@@ -3,7 +3,6 @@ input = sys.stdin.readline
 
 row, col = map(int, input().split())
 graph = [list(input().strip()) for _ in range(row)]
-visited = [[False]*col for _ in range(row)]
 #print(row, col, graph)
 answer=0
 
