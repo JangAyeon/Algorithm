@@ -1,61 +1,39 @@
-def getPersonalDateTerm(info):
-    date,term = info.split(" ")
-    year,month,day = list(map(int, date.split(".")))
-    return year, month, day,term
-
-def createTermPeriod(terms):
+def create_term2month(terms):
     _terms = {}
     for term in terms:
-        t, m = term.split()
+        t,m=term.split()
+        #print(t,m)
         _terms[t] = int(m)
     return _terms
-
-def createLastDate(period, yyyy,mm,dd):
-    m = mm + period
-    y = yyyy 
-    d = dd
-    if m>12:
-
-        if m%12==0: # 24월, 36월, 48월....
-            y = y + (m//12)-1
-            m = m%12
-        else:
-            y+=m//12
-            m=m%12
-        if m==0: # 추가된 달이 모두 년수로 똑나눠 떨어진 경우
-            m=12
-
-            
-    #print(y,m,d)
-    return  y, m,d
-
-def checkDate(yyyy,mm,dd, today):
-    y,m,d = list(map(int, today.split("."))) # 오늘
     
-    # 보관이 불가능한 경우
-    if yyyy<y:
-        return False
-    if (yyyy==y and mm<m):
-        return False
-    if (yyyy==y and mm==m and dd<=d):
-        return False
-    return True
+def date2num(date):
+    #print(date)
+    yyyy, mm, dd = date
+    return yyyy*(28*12)+mm*28+dd
     
+def isKeep(expire_num, today):
+    if expire_num>today:# 보관 가능
+        return True
+    else: # 보관 불가능
+        return False
+
 
 def solution(today, terms, privacies):
     answer = []
-    termPeriod = createTermPeriod(terms)
-    #print(termPeriod)
-    for idx, info in enumerate(privacies):
-        yyyy, mm, dd, t = getPersonalDateTerm(info)
-        _yyyy,_mm,_dd = createLastDate(termPeriod[t], yyyy,mm,dd)
-        #print("last date", _yyyy,_mm,_dd)
-        if not(checkDate(_yyyy,_mm,_dd, today)):
-            answer.append(idx+1)
-
-
+    term2month = create_term2month(terms)
+    today_date = list(map(int,today.split(".")))
+    today_num = date2num(today_date)
+    
+    for idx, privacy in enumerate(privacies,1):
+        date, term = privacy.split(" ")
+        yyyy, mm, dd = list(map(int, date.split(".")))
+        month = term2month[term]
+        expire_num = date2num([yyyy,mm+month,dd])
+        if not(isKeep(expire_num, today_num)): 
+            answer.append(idx)
+            
     return answer
-
+    
 
 
 
@@ -77,9 +55,9 @@ input3=[
 # [2]
 input4 = [
     "2019.12.09", ["A 12"], ["2018.12.10 A", "2010.10.10 A"]
-    
+
     ]
-    
+
 # [1,2]
 input5 = ["2020.12.17", ["A 12"], ["2010.01.01 A", "2019.12.17 A"]]
 
