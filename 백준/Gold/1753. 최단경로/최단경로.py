@@ -1,36 +1,41 @@
 import sys
-import heapq 
+from heapq import heappop, heappush
 input = sys.stdin.readline
-INF = sys.maxsize
+INF = int(1e9)
 
-# 정점갯수, 간선 갯수 
-n,m = map(int, input().split())
+v,e = map(int, input().split())
 start = int(input())
-graph = [[] for _ in range(n+1)]
-distance = [INF]*(n+1)
-q = []
+graph = [[] for _ in range(v+1)]
+distance = [INF]*(v+1)
+heap = []
 
-for _ in range(m):
-    s,e,c  = map(int, input().split())
-    graph[s].append((e,c)) # 목적지 노드, 가중치 
-    
-    
+# 그래프 초기화
+for _ in range(e):
+    s,e,c = map(int, input().split())
+    # 목적지 노드, 가중치
+    graph[s].append((e,c))
+
+
 def dijkstra(start):
-    heapq.heappush(q,(0, start)) # 거리, 노드 번호
     distance[start] = 0
-    while q:
-        dist, now = heapq.heappop(q)
+    # 우선순위 : cost, node
+    heappush(heap,(0,start))
+    
+    while heap:
+        dist, now = heappop(heap)
+        
         if distance[now]<dist:
             continue
-        for  next_node, weight in graph[now]:
-            cost = dist + weight
+        for next_node, weight in graph[now]:
+            cost  = weight+dist
             if distance[next_node]>cost:
                 distance[next_node] = cost
-                heapq.heappush(q,(cost,next_node))
+                heappush(heap,(cost, next_node))
                 
-dijkstra(start)
-for i in range(1, n+1):
-    if distance[i] == INF:
+dijkstra(start) 
+
+for i in range(1, v+1):
+    if distance[i] ==INF:
         print("INF")
     else:
         print(distance[i])
