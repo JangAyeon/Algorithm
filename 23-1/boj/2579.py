@@ -15,6 +15,7 @@ else:
     for i in range(2,n):
         dp[i] = max(dp[i-2],dp[i-3]+arr[i-1])+arr[i]
     print(dp[-1])
+    
 """
 input
 4
