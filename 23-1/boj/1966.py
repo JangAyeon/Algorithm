@@ -1,49 +1,31 @@
 import sys
-from heapq import heappush, heappop
 from collections import deque
 input = sys.stdin.readline
 
 T = int(input())
+
 for _ in range(T):
-    heap = []
-    que = deque()
-    n,m = map(int, input().split())
-    importants = list(map(int, input().split()))
-    find = importants[m]
+    n,m =map(int, input().split())
+    que = deque(map(int, input().split()))
+    idx = deque(range(0,n))
+    answer=0
     
-    for idx, value in enumerate(importants):
-        que.append([value, idx])
-       
-    for idx, value in enumerate(importants):
-        heappush(heap,(-value))
+    while True:
         
-    #print(heap)
-    answer = 0
-    flag = False
-    while True and heap:
-        num_= -heappop(heap)
-        answer+=1
-        while True and que:
-            value,idx = que.popleft()
-            #print(answer, que, value)
-            if value < num_:
-                que.append([value, idx])
-                #print(que)
-            elif idx ==m:
-                flag = True
+        # 대기열 가장 앞에 있는 것 = 가장 중요도 높은것
+        if que[0]==max(que):
+            answer +=1
+            
+            # 동일한 중요도이면서 찾던 문서 번호임
+            if idx[0]==m:
                 print(answer)
                 break
             else:
-                break
-        if flag:
-            answer = 0
-            break
+                que.popleft()
+                idx.popleft()
         
-    
-    
-    
-
-
-    
-        
-
+        # 대기열 가장 앞에 있는것 != 가장 중요도 높은 것
+        # 대기열 뒤로 넘기기
+        else:
+            que.append(que.popleft())
+            idx.append(idx.popleft())
