@@ -24,6 +24,8 @@ rl.on("line", (line)=>{
 // close 이벤트 핸들러 코드
 rl.on("close",()=>{
   const [W, R] =input[0];
+
+  // Math.trunc 사용해 소수접 이하 값 버림
   const answer = Math.trunc(W*(1+R/30));
   console.log(answer);
   rl.close();
