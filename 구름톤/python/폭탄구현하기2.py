@@ -7,6 +7,8 @@ from collections import deque
 n, k = map(int, input().split())
 graph = [input().split() for _ in range(n)]
 bomb = [[0 for _ in range(n)] for _ in range(n)]
+
+# 제자리, 상, 하, 좌, 우
 dr = [0,-1,1,0,0]
 dc = [0,0,0,-1,1]
 #print(bomb)
@@ -35,9 +37,8 @@ def bombSpread():
 					
 bombSpread()
 
-
+# 좌표 최대 값 구하기
 answer = 0
 for i in bomb:
 	answer = max(answer,max(i))
-
 print(answer)		
