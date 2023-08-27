@@ -1,3 +1,5 @@
+// day3: 합 계산기 
+
 const readline = require("readline");
 let rl = readline.createInterface({
   input: process.stdin,
