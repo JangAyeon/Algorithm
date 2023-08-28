@@ -37,9 +37,10 @@ def union_parent(parent, a,b):
         parent[a] = b
 
 
-
+# 간선을 한개씩 돌면서
 for edge in edges:
     cost, a,b =edge
+    # 싸이클이 발생하지 않은 경우 집합에 포함함
     if find_parent(parent, a)!=find_parent(parent, b):
         union_parent(parent, a,b)
         result +=cost
