@@ -2,7 +2,7 @@ import sys
 input = sys.stdin.readline
 
 graph = [list(map(int, input().split())) for _ in range(9)]
-zeros = [[row, col] for col in range(9) for row in range(9) if graph[row][col]==0]
+zeros = [[row, col] for row in range(9) for col in range(9) if graph[row][col]==0]
 
 def check_row(i, col):
     for row in range(9):
