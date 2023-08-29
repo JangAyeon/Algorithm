@@ -10,18 +10,22 @@ dc = [0,0,-1,1]
 
 
 def bfs(r,c):
+	# 시작 노드를 큐에 삽입하고 방문 처리(해당 칸 0으로 변경)
 	que = deque()
 	que.append([r,c])
 	graph[r][c]=0
 	while que:
+		# 큐에서 해당 노드를 꺼내
 		r,c = que.popleft()
+		# 해당 노드의 인접 노드
 		for i in range(4):
 			nr, nc = r+ dr[i], c+dc[i]
 			if not(0<=nr<n and 0<=nc<n):
 				continue
+			# 인접 노드 중 아직 방문하지 않은 노드(아직 해당 칸이 1이 아니라 0인 경우)를 
 			if graph[nr][nc]==1:
-				que.append([nr, nc])
-				graph[nr][nc]=0
+				que.append([nr, nc]) # 큐에 추가하고
+				graph[nr][nc]=0 # 방문 처리(해당 칸 0으로 변경)함
 	#print("===========")
 	#for i in graph:
 	#	print(*i)
