@@ -1,4 +1,14 @@
+"""
+[신장트리]
+하나의 그래프가 있을 때 모든 노드를 포함하면서 사이클이 존재하지 않는 부분 그래프
 
+[크루스칼 알고리즘]
+1. 간선 데이터를 비용에 따라 오름 차순 정렬
+2. 간선을 하나씩 확인하며 현재의 간선이 사이클을 발생시키는지 확인
+    2-1. 사이클이 발생하지 않는 경우, 최소 신장 트리에 포함
+    2-2. 사이클이 발생하는 경우, 최소 신장 트리에 포함하지 않음
+3. 모든 간선에 대해 2번 과정을 반복
+"""
 
 # 노드 갯수, 간선 갯수
 v,e = map(int, input().split())
@@ -37,9 +47,10 @@ def union_parent(parent, a,b):
         parent[a] = b
 
 
-
+# 간선을 한개씩 돌면서
 for edge in edges:
     cost, a,b =edge
+    # 싸이클이 발생하지 않은 경우 집합에 포함함
     if find_parent(parent, a)!=find_parent(parent, b):
         union_parent(parent, a,b)
         result +=cost

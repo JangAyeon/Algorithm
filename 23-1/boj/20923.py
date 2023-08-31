@@ -1,71 +1,68 @@
 import sys
-input = sys.stdin.readline
 from collections import deque
+input = sys.stdin.readline
 
-n, m = map(int, input().split())
-dDeck, sDeck = deque(), deque()
-dGround, sGround = deque(), deque()
+# Input
+card_cnt, turn_limit = map(int, input().split())
+do_card = deque()
+su_card = deque()
+for _ in range(card_cnt):
+    d, s = map(int, input().split())
+    do_card.append(d)
+    su_card.append(s)
 
-for _ in range(n):
-    a, b= map(int, input().split())
-    dDeck.appendleft(a)
-    sDeck.appendleft(b)
+#
+do_ground = deque()
+su_ground = deque()
+
+
+def bell():
     
+    ## 수연이가 이기는 경우
+    if do_ground and su_ground and do_ground[-1] + su_ground[-1] == 5:
+        su_card.extendleft(do_ground)
+        su_card.extendleft(su_ground)
+        su_ground.clear()
+        do_ground.clear()
+        return
+    
+    ## 도도가 이기는 경우
+    if (do_ground and do_ground[-1] == 5) or (su_ground and su_ground[-1] == 5):
+        do_card.extendleft(su_ground)
+        do_card.extendleft(do_ground)
+        su_ground.clear()
+        do_ground.clear()
+        return
 
-# 도도 차례
-check = True
 
-while True:
-    if check:
-        dCard = dDeck.popleft()
-        dGround.appendleft(dCard)
-        check = False
-        
+def game():
+    turn = 0
+    check = True
+    while True:
+        if check:
+            do_ground.append(do_card.pop())
+            check = False
+            ## 도도의 덱이 비어있는 경우 패배
+            if not do_card:
+                return "su"
+        else:
+            su_ground.append(su_card.pop())
+            check = True
+            ## 수연이의 덱이 비어있는 경우 패배
+            if not su_card:
+                return "do"
+        bell()
+        turn += 1
+        if turn == turn_limit:
+            break
+
+
+    if len(su_card) > len(do_card):
+        return 'su'
+    elif len(su_card) < len(do_card):
+        return 'do'
     else:
-        sCard = sDeck.popleft()
-        sGround.appendleft(sCard)
-        check = True
-        
-    ## 덱이 비어잇는 경우 게임 종료
-    if not dDeck or not sDeck:
-        break
-    
-    ## 도도가 이김
-    ## 가장 위에 위치한 카드의 숫자가 5가 나오는 순간
-    if (not check and dCard==5) or (check and sCard==5):
-        # 상대방의 그라운드에 있는 카드 더미를 뒤집어 (마지막 꺼부터 나와야함)
-        # 자신의 덱 아래로 그대로 합친 후 (마지막에 추가해야함)
-        while sGround:
-            dDeck.append(sGround.pop())
-            
-        # 자신의 그라운드에 있는 카드 더미 역시 뒤집어 
-        # 자신의 덱 아래로 그대로 가져와 합침
-        while dGround:
-            dDeck.append(dGround.pop())
-            
-    
-            
-        
-    ## 수연이가 이김
-    ## 가장 위에 위치한 카드의 숫자 합이 5가 되는 순간
-    ## 어느 쪽의 그라운드도 비어있으면 안된다
-    if sGround and dGround and (sGround[0]+dGround[0])==5:
-        while dGround:
-            sDeck.append(dGround.pop())
-        while sGround:
-            sDeck.append(sGround.pop())
-    # 차례 한 번 지남
-    m-=1
-    if m == 0:
-        break
-        
-        
-s, d = len(sDeck), len(dDeck)
-if s==d:
-    print("dosu")
-elif s<d:
-    print("do")
-else:
-    print("su")
-        
-        
+        return 'dosu'
+
+
+print(game())
