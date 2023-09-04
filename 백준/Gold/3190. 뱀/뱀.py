@@ -1,63 +1,52 @@
-# https://what-am-i.tistory.com/m/77
-
-
 import sys
 input = sys.stdin.readline
-from collections import deque 
 
-## 입력받기
+# 보드 크기
+n = int(input())
+# 사과 갯수
+k = int(input())
 
-n = int(input()) # 그래프 생성
-graph = [[0]*n for _ in range(n)]
+# 사과 위치 (1-index)
+apple = [list(map(int, input().split())) for _ in range(k)]
 
-m = int(input()) # 그래프에 사과 심기
-for _ in range(m):
-    a, b = map(int, input().split())
-    graph[a-1][b-1] = 1 
+# 방향 전환 횟수
+l = int(input())
+directions = {}
+for _ in range(l):
+    time, direction = input().split()
+    directions[int(time)] = direction
 
-k = int(input()) # 회전
-cmd = {}
-for _ in range(k):
-    x, c = input().split()
-    cmd[int(x)] = c 
+# 아래, 오른쪽, 위, 왼쪽    
+dr = [1,0, -1, 0]
+dc = [0, +1, 0, -1]
 
+def rotation(idx, cmd):
+    if cmd=="D":
+        idx = (idx-1)%4
+    elif cmd =="L":
+        idx = (idx+1)%4
+    return idx
+    
+time = 0
+snake = [[1,1]]
+idx = 1
 
-
-def change(d, c):
-    # 상(0) 우(1) 하(2) 좌(3)
-    # 동쪽 회전: 상(0) -> 우(1) -> 하(2) -> 좌(3) -> 상(0) : +1 방향
-    # 왼쪽 회전: 상(0) -> 좌(3) -> 하(2) -> 우(1) -> 상(0) : -1 방향
-    if c == "L":
-        d = (d - 1) % 4
+while True:
+    time+=1
+    r,c = snake[0]
+    nr, nc = r +dr[idx], c + dc[idx]
+    if not (1<=nr<=n and 1<=nc<=n):
+        #print("벽",nr,nc)
+        break
+    if [nr, nc] in snake:
+        #print("뱀")
+        break
+    snake.insert(0,[nr, nc])
+    if [nr, nc] in apple:
+        apple.remove([nr, nc])
     else:
-        d = (d + 1) % 4
-    return d
-
-
-# 상 우 하 좌
-dx = [-1, 0, 1, 0]
-dy = [0, 1, 0, -1]
-
-
-
-def solution():
-    direction = 1  # 초기 방향
-    time = 1  # 시간
-    x, y = 0, 0  # 초기 뱀 위치
-    visited = deque([[x, y]])  # 방문 위치
-    graph[x][y] = 2
-    while True:
-        x, y = x + dx[direction], y + dy[direction]
-        if 0 <= y < n and 0 <= x < n and graph[x][y] != 2:
-            if not graph[x][y] == 1:  # 사과가 없는 경우
-                temp_x, temp_y = visited.popleft()
-                graph[temp_x][temp_y] = 0  # 꼬리 제거
-            graph[x][y] = 2
-            visited.append([x, y])
-            if time in cmd.keys():
-                direction = change(direction, cmd[time])
-            time += 1
-        else:  # 본인 몸에 부딪히거나, 벽에 부딪힌 경우
-            return time
-
-print(solution())
+        snake.pop()
+    if time in directions.keys():
+        idx = rotation(idx, directions[time])
+    
+print(time)
