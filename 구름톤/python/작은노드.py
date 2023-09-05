@@ -1,5 +1,7 @@
 # day14: 작은 노드 
 
+
+## BFS : 인접 리스트 활용 
 import sys
 input = sys.stdin.readline
 from collections import deque
