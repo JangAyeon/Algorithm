@@ -40,3 +40,31 @@ def game(start):
 node = game(start)
 print(sum(distance), node)
 
+
+## DFS : 인접 리스트
+import sys
+sys.setrecursionlimit(10**4)
+
+
+N, M, start = map(int, input().split())
+graph = [[] for _ in range(N + 1)]
+visited = [0] * (N + 1)
+
+for _ in range(M):
+	s, e = map(int, input().split())
+	graph[s].append(e)
+	graph[e].append(s)
+
+def dfs(now):
+	for to in sorted(graph[now]):
+		if not visited[to]:
+			visited[to] = 1
+			return dfs(to)
+	else:
+		return now
+
+
+
+visited[start] = 1
+result = dfs(start)
+print(sum(visited), result)
