@@ -1,5 +1,6 @@
 # 문제 16. 연합
 
+## 유니온 파인드 활용 
 import sys
 input = sys.stdin.readline
 
