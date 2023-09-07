@@ -1,3 +1,5 @@
+# 참고 풀이 : https://velog.io/@yje876/python%EB%B0%B1%EC%A4%80%EB%B6%84%ED%95%A0%EC%A0%95%EB%B3%B5-1780-%EC%A2%85%EC%9D%B4%EC%9D%98-%EA%B0%9C%EC%88%98
+
 import sys
 input = sys.stdin.readline
 
