@@ -17,3 +17,27 @@ def solution(n, lost, reserve):
             
     answer = n - len(lost_set)
     return answer
+
+
+
+def solution(n,lost, reserve):
+
+    real_lost = list(set(lost)-set(reserve))
+    real_reserve = list(set(reserve) - set(lost))
+    answer = n-len(real_lost) # 일단 체육 못하는 사람
+    for student in real_lost:
+        for dx in [-1,1]:
+            if student+dx in real_reserve:
+                real_reserve.remove(student+dx)
+                answer+=1 # 빌렸으니 체육 할 수 있음 => 체육 가능한 사람 수 증가+1
+                break
+    return answer
+    
+    
+input1 = [5,[2,4], [1,3,5]]
+input2 = [5,[2,4],[3]]
+input3 = [3,[3],[1]]
+inputs = [input1, input2, input3]
+
+for n, lost, reserve in inputs:
+    print(solution(n,lost, reserve))
