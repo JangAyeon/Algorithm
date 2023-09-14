@@ -1,3 +1,5 @@
+# https://school.programmers.co.kr/learn/courses/15008/lessons/121684
+
 answer = 0
 
 def transpose(ability):
@@ -33,4 +35,4 @@ def solution(ability):
     # L, sum, ability, check
     # L : 선택한 종목 갯수, sum : 능력치의 합, check : 선택되는 학생 배열
     
-    return answer
+    return answerㄴ
