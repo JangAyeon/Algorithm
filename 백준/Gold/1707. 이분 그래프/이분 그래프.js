@@ -1,48 +1,59 @@
-let file = require('fs').readFileSync('/dev/stdin');
-let input = file.toString().split('\n');
-let testCases = Number(input[0]); // 테스트 케이스의 수 
-let line = 1;
+let fs = require("fs")
+let line = fs.readFileSync("/dev/stdin").toString().split("\n")
 
-// 미방문(color: -1), 빨강(color: 0), 파랑(color: 1) 
-function bfs(x, graph, visited) {
-  queue =[];
-  queue.push(x);
-  visited[x] = 0; // 처음 노드는 빨간색으로 칠하기 
-  while (queue.length != 0) {
-      x = queue.shift();
-      for (let y of graph[x]) {
-        if (visited[y] == -1) {
-          visited[y] = (visited[x] + 1) % 2; // 빨강 ↔ 파랑
-          queue.push(y);
-        }
-    } 
+
+let T = Number(line[0])
+let idx=1
+
+function bfs(start){
+  let que = [start]
+  visited[start]=0
+  while (que.length!=0){
+    node = que.shift()
+    state = (visited[node]+1)%2
+    for (let next_ of graph[node]){
+      // console.log(node,next_,state, visited[node], visited[next_],visited)
+      // 최초 방문
+      if (visited[next_]==-1){
+        visited[next_]=state
+        que.push(next_)
+      }
+      else if(visited[next_]!=state){
+        return false
+      }
+
+    }
+
   }
+
+  return true
+
 }
-function isBipartite(graph, visited) {
-  for (let x = 1; x < visited.length; x++) {
-    for (let y of graph[x]) {
-      if (visited[x] == visited[y]) {
-        return false;}
+let visited;
+let graph;
+
+while(T--){
+  [v, e] = line[idx].split(" ").map((x) => Number(x));
+  // 상태
+  visited = Array(v + 1).fill(-1);
+  // 그래프 생성
+  graph = Array.from(Array(v + 1), () => new Array());
+  for (let j = 1; j <= e; j++) {
+    [x1, x2] = line[idx + j].split(" ").map((x) => Number(x));
+    graph[x1].push(x2);
+    graph[x2].push(x1);
+  }
+  // console.log(graph, visited);
+  let answer = "YES";
+  for (let start = 1; start <= v; start++) {
+    // 최초 방문
+    if (visited[start] == -1) {
+      if (bfs(start) == false) {
+        answer = "NO";
+        break;
+      }
     }
   }
-  return true; 
-}
-
-while (testCases--) {
-  // 정점의 개수(V), 간선의 개수(E)
-  let [v, e] = input[line].split(' ').map(Number); // 그래프 정보 입력받기
-  let graph = [];
-  for (let i = 1; i <= v; i++) graph[i] = [];
-    for (let i = 1; i <= e; i++) {
-      let [u, v] = input[line + i].split(' ').map(Number);
-      graph[u].push([v]);
-      graph[v].push([u]);
-  }
-  let visited = new Array(v + 1).fill(-1); // 방문 정보 
-  for (let i = 1; i <= v; i++) { // BFS를 이용해 색칠
-      if (visited[i] == -1) bfs(i, graph, visited);
-    }
-  line += e + 1; // 다음 테스트 케이스로 이동
-  if (isBipartite(graph, visited)) {console.log("YES");} 
-  else {console.log("NO");}
+  idx += e + 1; // 다음 테스트 케이스로 이동
+  console.log(answer);
 }
