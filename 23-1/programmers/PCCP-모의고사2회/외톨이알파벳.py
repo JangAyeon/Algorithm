@@ -1,3 +1,5 @@
+# https://school.programmers.co.kr/learn/courses/15008/lessons/121683
+
 def getCount(str):
     countDic = {}
     keys = list(set(str))
