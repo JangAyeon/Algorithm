@@ -1,11 +1,9 @@
 function solution(numbers, direction) {
     if(direction==="right"){
-        let x = numbers.pop()
-        numbers.unshift(x)
+        numbers = [numbers.pop(), ...numbers]
     }
     else{
-        let x = numbers.shift()
-        numbers.push(x)
+        numbers=[...numbers.slice(1), numbers.shift()]
     }
     
     return numbers;
