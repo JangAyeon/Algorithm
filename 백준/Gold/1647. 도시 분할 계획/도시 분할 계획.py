@@ -39,7 +39,7 @@ end_=0 # 마지막에 연결된 마을 길이
 for i in graph:
     if find(i[0])!=find(i[1]):
         union(i[0], i[1])
-        answer+=i[2]
-        end_=i[2]
+        answer+=i[2] # 마을의 연결 비용 계속 더하기
+        end_=i[2] # 마지막에 연결된 마을 연결 비용 갱신
 
-print(answer-end_)
+print(answer-end_) # 마지막 연결된 비용은 빼주기
