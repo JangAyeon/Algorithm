@@ -1,26 +1,24 @@
 import sys
-input = sys.stdin.readline
+input  = sys.stdin.readline
 
-def binary_search(left, right, target):
+n = int(input())
+arr = list(map(int, input().split()))
+ans = [arr[0]] # 증가하는 부분 수열 리스트
 
-    while left < right:
-        mid = (left + right) // 2
-        if lis[mid] < target:
-            left = mid + 1
+def binarySearch(l,r,target):
+    while l<r:
+        mid = (l+r)//2
+        if ans[mid]<target:
+            l = mid+1
         else:
-            right = mid
-    return right
-    
-N = int(input())
-numbers = list(map(int, input().split()))
-lis = []
-lis.append(numbers[0])
+            r = mid
+    return r
 
-for i in range(1, N):
-    if lis[-1] < numbers[i]:
-        lis.append(numbers[i])
+for i in range(1,n):
+    if ans[-1]< arr[i]:
+        ans.append(arr[i])
     else:
-        j = binary_search(0, len(lis)-1, numbers[i])
-        lis[j] = numbers[i]
+        idx = binarySearch(0, len(ans)-1,arr[i])
+        ans[idx] = arr[i]
 
-print(N - len(lis))
+print(n-len(ans))
