@@ -33,12 +33,12 @@ for _ in range(m):
     x,y=map(int, input().split())
     union(x-1, y-1)
 
-
+# 거리 구해서 그래프에 넣음
 for i in range(n-1):
     for j in range(i+1, n):
         graph.append((i,j, dist(cord[i], cord[j])))
 
-graph.sort(key=lambda x:x[2])
+graph.sort(key=lambda x:x[2]) # 정렬
 for i in graph:
     if not(check(i[0], i[1])):
         union(i[0], i[1])
