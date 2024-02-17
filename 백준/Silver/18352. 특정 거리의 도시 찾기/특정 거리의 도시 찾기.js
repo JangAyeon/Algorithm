@@ -1,36 +1,45 @@
-const filePath = process.platform === 'linux' ? '/dev/stdin' : './input.txt';
-const input = require('fs').readFileSync(filePath).toString().trim().split('\n');
-const [N, M, K, X] = input.shift().split(' ').map(Number);
-const arr = input.map((v) => v.split(' ').map(Number));
-const graph = [...Array(N + 1)].map(() => []);
-const distance = Array(N + 1).fill(0); // 도로의 거리를 카운트하면서 방문 체크에 이용할 배열
-let answer = [];
+const fs = require("fs");
+const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
+let lines = fs.readFileSync(filePath).toString().trim().split("\n");
 
-// 단방향 그래프 만들기
-arr.map(([from, to]) => graph[from].push(to));
+// 첫째 줄에 도시의 개수 N, 도로의 개수 M, 거리 정보 K, 출발 도시의 번호 X가
+let index = 0;
+let [n,m,k,x] = lines[index++].split(" ").map(Number)
+let graph = Array.from({length:n+1}, ()=>[])
+let dist = Array.from({length:n+1}, ()=>Number.MAX_SAFE_INTEGER)
+let answer = []
 
-const bfs = (start) => {
-  const queue = [start];
-  distance[start] = 1;
 
-  while (queue.length) {
-    const now = queue.shift();
-    if (distance[now] == K + 1) {
-      answer.push(now);
-      continue;
+for(let idx=1;idx<=m;idx++){
+  let [a, b] = lines[idx].split(" ").map(Number)
+  graph[a].push(b)
+}
+
+function bfs(start){
+  const que = [start]
+  dist[start] = 0
+  while (que.length){
+    const curr = que.shift()
+    if (dist[curr]==k){
+        answer.push(curr)
+        continue
     }
-    for (const next of graph[now]) {
-      if (!distance[next]) {
-        queue.push(next);
-        distance[next] = distance[now] + 1;
+      for (let next_ of graph[curr]) {
+       
+        if (dist[next_] > dist[curr] + 1) {
+          
+          dist[next_] = dist[curr] + 1;
+          que.push(next_);
+        }
       }
-    }
   }
-};
 
-bfs(X);
-if (answer.length) {
-  answer = answer.sort((a, b) => a - b).join('\n');
-} else answer = -1;
+}
 
-console.log(answer);
+bfs(x)
+answer = answer.length?answer:[-1]
+answer.sort((a,b)=>a-b)
+
+for(let v of answer){
+  console.log(v)
+}
