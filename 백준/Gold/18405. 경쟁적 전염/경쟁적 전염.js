@@ -1,29 +1,25 @@
-const fs = require("fs");
 
+
+const fs = require("fs");
+const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
 let graph = [];
 let virus = [];
 let que = [];
-const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
-// Assuming the file content is in 'input.txt'
-fs.readFile(filePath, "utf8", function (err, data) {
-  if (err) {
-    console.error(`Error reading file: ${err}`);
-    return;
-  }
 
-  // Split the file content by newline
-  const lines = data.split("\n");
-  let lineIndex = 0;
+// Assuming the file content is in 'input.txt'
+let lines = fs.readFileSync(filePath).toString().trim().split("\n")
+
+
 
   // Process the first line to get n and k
-  let [n, k] = lines[lineIndex++].split(" ").map(Number);
+  let [n, k] = lines[0].split(" ").map(Number);
   graph = lines
-    .slice(lineIndex, lineIndex + n)
+    .slice(1, 1 + n)
     .map((line) => line.split(" ").map(Number));
-  lineIndex += n;
+
 
   // Process the second line to get s, x, and y
-  let [s, x, y] = lines[lineIndex++].split(" ").map(Number);
+  let [s, x, y] = lines[lines.length-1].split(" ").map(Number);
 
   // Process the virus data
   for (let r = 0; r < graph.length; r++) {
@@ -68,4 +64,3 @@ fs.readFile(filePath, "utf8", function (err, data) {
 
   bfs();
   console.log(graph[x - 1][y - 1]);
-});
