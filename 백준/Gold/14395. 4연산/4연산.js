@@ -1,64 +1,68 @@
-let fs = require("fs")
-let input = fs.readFileSync("/dev/stdin").toString().split(" ").map((x)=>Number(x))
-let [n,m] = input
-//console.log(n,m)
-const MAX_ = 1e9
+const fs = require("fs")
+const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
+const inputs = fs.readFileSync(filePath).toString().split("\n")
+const [n,m] = inputs[0].split(" ").map(Number)
+// console.log(n,m)
+
+const MAX_ = 10**9
+const visited = []
+const ans = []
+const cmds=["*","+","-","/"]
+cmds.sort()
 
 
-function calc(num,cmd){
-  if (cmd=="+"){
+function calc(num, cmd){
+  if (cmd==="+"){
     return num+num
   }
-  if(cmd=="/"){
-    return Math.floor(num/num)
-  }
-  if(cmd=="*"  ){
-    return num*num
-  }
-  if(cmd=="-"){
+  else if (cmd==="-"){
     return num-num
+  }
+  else if (cmd==="*"){
+    return num * num
+  }
+  else if(cmd=="/"){
+    return num/num
   }
 }
 
-const cmds = ['*', '+', '-', '/' ];
-function bfs(num){
-  let que = [[num, []]];
-  let visited=[num]
-  while (que.length !=0){
-    [num, process]= que.shift()
-    // console.log(num, process)
+
+function bfs(){
+  const que = [[n, []]]
+  while(que.length>0){
+    const [num,process] = que.shift()
+    
     for(let cmd of cmds){
-      if (num==0 && cmd=="/"){
+      //console.log(num, process, cmd, cmds);
+      if (num===0 && cmd==="/"){
         continue
       }
-      else{
-        x=calc(num, cmd)
-        
-        if (x==m){
-          return process+[cmd]
-        }
-        else if(x<MAX_ && !(visited.includes(x))){
-          que.push([x, process+[cmd]])
-          visited.push(x)
-        }
+      x = calc(num, cmd)
+
+      // 목표 수 도달한 경우
+      if (x===m){
+        // console.log([...process, cmd]);
+        ans.push([...process, cmd])
+        return
+      }
+      if((x<=MAX_)&&(!visited.includes(x))){
+        // console.log([...process, cmd]);
+        que.push([x, [...process, cmd]])
+        visited.push(x)
       }
     }
   }
-  return []
-  
-
 }
-
-if (n==m){
+bfs()
+if (n===m){
   console.log(0)
 }
 else{
-  const result = bfs(n)
-  if (result.length==0){
+  if(ans.length===0){
     console.log(-1)
   }
   else{
-    console.log(result)
+    ans.sort()
+    console.log(ans[0].join(""));
   }
-
 }
