@@ -1,47 +1,53 @@
+import sys
+input = sys.stdin.readline
 from collections import deque
 
-d = ['*', '+', '-', '/' ]
-MAX_=int(1e9)
+n,m = map(int,input().split())
+MAX_ = 10**9
+visited = []
+ans = []
+cmds = ['*', '+', '-', '/']
+cmds.sort()
 def calc(num, cmd):
-    if cmd=="*":
-        return num*num
     if cmd=="+":
         return num+num
-    if cmd=="-":
+    elif cmd=="-":
         return num-num
-    if cmd=="/":
-        return num//num
-        
+    elif cmd=="*":
+        return num*num
+    else:
+        return num/num
 
-def bfs(start, result):
-    visited=[]
-    ans=[]
-    global t
+
+def bfs():
+    global ans
     que = deque()
-    que.append([start, result])
+    que.append([n,[]])
     while que:
-        num, progress = que.popleft()
-        for i in range(4):
-            if num==0 and d[i]=="/":
+        num, process = que.popleft()
+        for idx in range(4):
+            if num==0 and cmds[idx]=="/":
                 continue
-            x = calc(num, d[i])
-            # print(num,x, d[i],progress)
-            if x==t:
-                ans.append(progress+[d[i]])
-                return ans
-            if x<=MAX_ and x not in visited:
-                visited.append(x)
-                que.append([x, progress+[d[i]]])
-    return ans     
+            x = calc(num, cmds[idx])
     
-s,t = map(int, input().split())
-if s==t:
+            
+            if x==m:
+                #print(x, process+[cmds[idx]])
+                ans.append(process+[cmds[idx]])
+                return
+   
+            if x<=MAX_ and x not in visited:
+                que.append([x, process+[cmds[idx]]])
+                visited.append(x)
+
+if n==m:
     print(0)
 else:
-    ans = bfs(s,[])
-    if len(ans)!=0:
-        ans.sort()
-        print("".join(ans[0]))
-    else:
+    bfs()
+    if not(ans):
         print(-1)
+    else:
+        ans.sort()
+        answer = "".join(ans[0])
+        print(answer)
 
