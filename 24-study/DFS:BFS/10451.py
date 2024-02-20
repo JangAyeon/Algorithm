@@ -1,26 +1,33 @@
 import sys
+input = sys.stdin.readline
 from collections import deque
 
+def bfs(start):
+    global answer
+    que =deque()
+    que.append(start)
+    group=[start]
+    while que:
+        node = que.popleft()
+        pair = arr[node]
+        if not(visited[pair]):
+            visited[pair]=True
+            if pair in group:
+                answer.append(group[group.index(pair):])
+                break
+            else:
+                group.append(pair)
+                que.append(pair)
 
-input = sys.stdin.readline
-T = int(input())
 
-def group(i, arr, visited):
-    while not(visited[i]):
-        visited[i]=True
-        i = arr[i]
-    return i
-
+T=int(input())
 
 for _ in range(T):
-    answer = 0
     n = int(input())
     arr = [0]+list(map(int, input().split()))
-    visited = [False]*(n+1)
-    
-    for i in range(1, n+1):
-        if not(visited[i]):
-            if i == group(i, arr, visited):
-                answer+=1
-    #print(n, arr, visited)
-    print(answer)
+    visited = [0 for _ in range(n+1)] 
+    answer = []
+    for idx in range(1, n+1):
+        if not(visited[idx]):
+            bfs(idx)
+    print(len(answer))
