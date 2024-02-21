@@ -9,24 +9,21 @@ def move(cmd, r,c):
         return [r-1, c]
     if cmd=="D":
         return [r+1,c]
-
-
+    
+def isValidLoc(nr, nc):
+    if not(-5<=nr<=5) or not(-5<=nc<=5):
+        return False
+    else:
+        return True
+    
 def solution(dirs):
     answer = set()
-    que = deque()
-    que.append([0,0])
-    cmds = list(dirs)
-    print(cmds)
-    while que and cmds:
-        cmd = cmds.pop(0)
-        r,c = que.popleft()
-        nr, nc = move(cmd, r,c)
-        if not(-5<=nr<=5) or not(-5<=nc<=5):
-            que.append([r,c])
+    r,c=0,0
+    for cmd in dirs:
+        nr, nc = move(cmd, r, c)
+        if not(isValidLoc(nr, nc)):
             continue
-        # print(cmd, r,c,nr, nc)
-        que.append([nr, nc])
         answer.add((nr, nc, r, c))
         answer.add((r,c, nr, nc))
-    #print(len(answer), que, cmds)
+        r,c = nr,nc
     return len(answer)//2
