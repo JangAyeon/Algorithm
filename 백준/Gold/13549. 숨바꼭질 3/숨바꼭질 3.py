@@ -1,7 +1,7 @@
 import sys
 input = sys.stdin.readline
 from collections import deque
-#  1초 후에 X-1 또는 X+1로 이동하게 된다. 순간이동을 하는 경우에는 0초 후에 2*X
+
 
 n,m = map(int, input().split())
 INF = float("inf")
@@ -9,18 +9,19 @@ distance = [INF for _ in range(100001)]
 answer = INF
 
 def bfs(start):
-    que = deque([[start, 0]])
-    global answer
+    que = deque()
+    que.append(start)
+    distance[start] = 0
     while que:
-        now, time = que.popleft()
+        now = que.popleft()
         if now == m:
-            answer =min(answer, time)
-
+            return distance[now]
         for idx,next_ in enumerate([now*2, now+1, now-1]):
-            if 0<=next_<100001 and distance[next_]>time:
-                distance[next_] = time if idx==0 else time+1
-                que.append([next_, distance[next_]])
+            dist =  distance[now] if idx==0 else distance[now]+1
+            if 0<=next_<100001 and distance[next_]>dist:
+                #  1초 후에 X-1 또는 X+1로 이동하게 된다. 순간이동을 하는 경우에는 0초 후에 2*X
+                distance[next_] =dist
+                que.append(next_)
        
 
-bfs(n)
-print(answer)
+print(bfs(n))
