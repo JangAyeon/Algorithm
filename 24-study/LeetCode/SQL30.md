@@ -38,3 +38,12 @@ SELECT tweet_id
 FROM Tweets
 WHERE LENGTH(content)>15
 ```
+
+### `1378`: Replace Employee ID With The Unique Identifier
+```sql
+# Write your MySQL query statement below
+select unique_id, name
+from Employees 
+left join EmployeeUNI
+on Employees.id = EmployeeUNI.id
+```
