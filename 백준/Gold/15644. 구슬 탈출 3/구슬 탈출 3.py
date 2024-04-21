@@ -1,88 +1,76 @@
-# 구슬탈출
 import sys
-from collections import deque
 input = sys.stdin.readline
-# 상하좌우
-# UDLR
-dir = {"L":[0,-1],"R":[0,1],"U":[-1,0],"D":[1,0]}
- 
-N, M = map(int, input().split())
-visited = [[[[0 for i in range(M)] for i in range(N)] for i in range(M)] for i in range(N)]
- 
-graph = []
-rStart =[]
-bStart=[]
-for r in range(N):
-    tmp = list(input().strip())
-    if "R" in tmp:
-        rStart=[r, tmp.index("R")]
-    if "B" in tmp:
-        bStart = [r, tmp.index("B")]
-    graph.append(tmp)
+from collections import deque
 
-que = deque()
-rr,rc = rStart
-br,bc = bStart
-que.append((rr,rc,br,bc, []))
- 
-visited[rr][rc][br][bc] = 1 # 방문처리
- 
+n,m = map(int, input().split())
+rStart=[]
+bStart=[]
+graph=[]
+
+visited = [[ [[ 0 for _ in range(m)]for _ in range(n)]for _ in range(m)]for _ in range(n)]
+dir = {"L":[0,-1],"R":[0,1],"U":[-1,0],"D":[1,0]}
+
+
+for r in range(n):
+    lst = list(input().strip())
+    if "R" in lst:
+        rStart=[r, lst.index("R")]
+    if  "B" in lst:
+        bStart = [r, lst.index("B")]
+    graph.append(lst)
+
 def bfs():
+    que = deque()
+    rr,rc = rStart
+    br,bc = bStart
+    que.append([rr,rc,br,bc,[]])
+    visited[rr][rc][br][bc]=1
     while que:
-        rr,rc,br,bc, route = que.popleft()
-        
-        if (len(route) > 10):
-            print(-1)
-            return
-    
-        if graph[rr][rc] == 'O':
-            print(len(route))
-            print("".join(route))
-            return
-        
+        rr,rc,br,bc,route = que.popleft()
+        if len(route)>10:
+            return [-1]
+        if graph[rr][rc]=='O':
+            return route
         for d in dir.keys():
-            # RED
-            nrr, nrc = rr, rc
+            ## red
+            nrr, nrc = rr,rc
             while True:
-                nrr += dir[d][0]
-                nrc += dir[d][1]
-                # 탈출조건1 - 벽
-                if graph[nrr][nrc] == '#':
-                    nrr -= dir[d][0]
-                    nrc -=dir[d][1]
+                nrr,nrc = nrr+dir[d][0], nrc+dir[d][1]
+                if graph[nrr][nrc]=="#":
+                    nrr,nrc = nrr-dir[d][0], nrc-dir[d][1]
                     break
-                # 탈출조건2 - 구멍
-                if graph[nrr][nrc] == 'O':
+                if graph[nrr][nrc]=='O':
                     break
-            
-            # BLUE
-            nbr, nbc = br, bc
+                
+            ## blue
+            nbr, nbc = br,bc
             while True:
-                nbr += dir[d][0]
-                nbc += dir[d][1]
-                # 탈출조건1 - 벽
-                if graph[nbr][nbc] == '#':
-                    nbr -=dir[d][0]
-                    nbc -=dir[d][1]
+                nbr,nbc = nbr+dir[d][0], nbc+dir[d][1]
+                if graph[nbr][nbc]=="#":
+                    nbr,nbc = nbr-dir[d][0], nbc-dir[d][1]
                     break
-                # 탈출조건2 - 구멍
-                if graph[nbr][nbc] == 'O':
+                if graph[nbr][nbc]=='O':
                     break
-            
-            # Blue가 구멍에 들어가면 탐색할 가치가 없으므로
-            if graph[nbr][nbc] == 'O': continue
-            # BLUE와 RED가 같은 위치라면 더 멀리서 온 것을 뒤로 빼야한다.
-            if (nrr == nbr and nrc == nbc):
-                if( abs(nrr - rr) + abs(nrc - rc) > abs(nbr - br) + abs(nbc - bc) ):
-                    nrr -= dir[d][0]
-                    nrc -=dir[d][1]
+                
+
+            if graph[nbr][nbc]=='O':
+                continue
+            if nbr==nrr and nrc==nbc:
+                ## red가 더 멀리서 온 경우
+                if (abs(rr-nrr)+abs(rc-nrc))> (abs(br-nbr)+abs(bc-nbc)):
+                    nrr , nrc= nrr-dir[d][0],nrc-dir[d][1]
                 else:
-                    nbr -= dir[d][0]
-                    nbc -=dir[d][1]
-            
-            if visited[nrr][nrc][nbr][nbc] == 0:
-                que.append((nrr, nrc, nbr, nbc, route+[d]))
-                visited[nrr][nrc][nbr][nbc] = 1 # 방문처리    
+                    nbr , nbc= nbr-dir[d][0],nbc-dir[d][1]
+
+
+            if not(visited[nrr][nrc][nbr][nbc]):
+                que.append([nrr,nrc,nbr,nbc,route+[d]])
+                visited[nrr][nrc][nbr][nbc]=1
+    return [-1]
+
+answer = bfs()
+if answer[-1]==-1:
     print(-1)
- 
-bfs()
+else:
+    print(len(answer))
+    print("".join(answer))
