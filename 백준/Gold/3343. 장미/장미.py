@@ -15,7 +15,6 @@ answer = float('inf')
  
 for A_COUNT in range(BC):
     B_COUNT = ceil((N-A_COUNT*AC)/BC)
-    isover = False
     answer = min(answer, A_COUNT*AP + B_COUNT*BP)
     if B_COUNT<=0:
         break
