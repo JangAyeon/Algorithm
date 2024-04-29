@@ -1,13 +1,15 @@
-# 문제 : https://www.acmicpc.net/problem/1010
-# https://lar542.github.io/Python/2019-07-11-python2/
+import sys
+input = sys.stdin.readline
+
+n = int(input())
 
 
-import math
+def fact(end):
+    answer=1
+    for i in range(1, end+1):
+        answer*=i
+    return answer
 
-
-T = int(input())
-
-for _ in range(T):
-    n, m = map(int, input().split())
-    ans = math.factorial(m) // (math.factorial(n) * math.factorial(m - n))
-    print(ans)
+for _ in range(n):
+    a,b = map(int, input().split())
+    print(int(fact(b)/(fact(b-a)*fact(a))))
