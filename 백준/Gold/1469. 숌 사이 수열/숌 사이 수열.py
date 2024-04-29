@@ -1,32 +1,32 @@
 import sys
 input = sys.stdin.readline
 
-def dfs(count, N, S, X):
-    if count == N:
-        print(*S)
+n = int(input())
+arr = sorted(list(map(int, input().split())))
+blank = -1
+
+lst = [blank]*(2*n)
+
+
+def dfs(depth, s):
+
+    if depth==n:
+        print(*s)
         exit()
-    
-    for i in X:
-        if i in S:
+
+    for x in arr:
+        if x in s:
             continue
-        next_idx = S.index(BLANK)
-        if next_idx + i + 1 >= N * 2:
+        idx = s.index(blank)
+        if idx+x+1>=2*n:
             break
-        if S[next_idx + i + 1] != BLANK:
+        if s[idx+x+1]!=blank:
             continue
+        s[idx]=x
+        s[idx+x+1]=x
+        dfs(depth+1, s)
+        s[idx]=blank
+        s[idx+x+1]=blank
 
-        S[next_idx] = i
-        S[next_idx + i + 1] = i
-        dfs(count+1, N, S, X)
-        S[next_idx] = BLANK
-        S[next_idx + i + 1] = BLANK
-
-BLANK = -1
-N = int(input())
-X = sorted(list(map(int, input().split())))
-S = [BLANK] * (N * 2)
-dfs(0, N, S, X)
+dfs(0, lst)
 print(-1)
-
-
-
