@@ -10,9 +10,9 @@ count = 0
 for curr_h in arr:
     if heights[curr_h]==0:
         count+=1
-        heights[curr_h-1]+=1
+
     else:
         heights[curr_h]-=1
-        heights[curr_h-1]+=1
+    heights[curr_h-1]+=1
 
-print( sum(heights))
+print(count)
