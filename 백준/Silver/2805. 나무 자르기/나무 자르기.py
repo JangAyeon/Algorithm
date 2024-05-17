@@ -10,7 +10,9 @@ h = -float("inf")
 def getHeight(height):
     temp = 0
     for i in lst:
-        temp+=max(0, i - height)
+        cut = i- height
+        if cut>0:
+            temp+=cut
     return temp
 
 
@@ -21,12 +23,10 @@ def bisect(start, end):
     height = (start+end)//2
     total = getHeight(height)
     ###print(total, height)
-    if m<total:
-        h = max(height, h)
-        bisect(height+1, end)
-    elif m==total:
+    if m<=total:
         h = height
-        return
+        bisect(height+1, end)
+
     else:
         bisect(start,height-1)
 
