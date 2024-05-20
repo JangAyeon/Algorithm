@@ -13,8 +13,8 @@ def dfs(nums,visited):
     if len(nums)==n:
         answer.add("".join(nums))
         return
-    if sum(visited)==n:
-        return
+    #if sum(visited)==n:
+    #    return
     for idx in range(n):
         if not(visited[idx]):
             visited[idx]=1
