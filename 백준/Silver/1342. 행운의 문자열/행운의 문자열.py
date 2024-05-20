@@ -9,10 +9,12 @@ answer = set()
 
 def dfs(nums,visited):
     ##print(nums, visited)
-    if sum(visited)==n:
-        if len(nums)==n:
-            answer.add("".join(nums))
+
+    if len(nums)==n:
+        answer.add("".join(nums))
         return
+    #if sum(visited)==n:
+    #    return
     for idx in range(n):
         if not(visited[idx]):
             visited[idx]=1
