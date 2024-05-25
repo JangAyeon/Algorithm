@@ -3,22 +3,20 @@
 출력[3, 2, 1, 1, 0]
 """
 
-
 def solution(prices):
     n = len(prices)
-    answer = [0]*(n)
-    stack = [0]
-    
-    for i in range(1, n):
-        ## 가격이 떨어진 경우
+    stack = []
+    answer = [-1]*(n)
+    stack=[0]
+    for i in range(1,n):
+        price = prices[i]
         while stack and prices[stack[-1]]>prices[i]:
-            p = stack.pop()
-            answer[p] =i-p
+            x = stack.pop()
+            answer[x] = i-x
         stack.append(i)
-
+            
     while stack:
-        j = stack.pop()
-        answer[j] = n-1-j 
-            
-            
+        x = stack.pop()
+        answer[x] = i-x
+
     return answer
