@@ -9,17 +9,18 @@ def solution(word):
     def dfs(words,dept):
         nonlocal answer
         nonlocal flag
-        
+        print(words, dept, answer)
+
         if "".join(words)==word:
-            print(answer)
+            print(answer, dept)
             flag = True
-            return 
+            return
+        if len(words)>n or dept>=n:
+            return
         for i in range(n):
-            if dept>=5 or flag:
-                return
-            if not visited[dept][i]:
-                answer+=1
+            if not(flag) and not visited[dept][i]:
                 visited[dept][i]=True
+                answer+=1
                 dfs(words+[v[i]], dept+1)
                 visited[dept][i]=False
     dfs([],0)
