@@ -1,87 +1,88 @@
-# !/usr/bin/env python
-# -*- coding: utf-8 -*-
-# programmers 퍼즐조각채우기
-
 from collections import deque
 
-dx = [0, 0, -1, 1]
-dy = [-1, 1, 0, 0]
+dr = [-1,1,0,0]
+dc = [0,0,-1,1]
 
-
-# board와 puzzle의 각각 빈공간과 블럭을 찾는 함수 (BFS)
-def find_block(board, f):
-    empty_board_list = []
-    visited = [[False] * len(board[0]) for _ in range(len(board))]
-
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            if not visited[i][j] and board[i][j] == f:
-                queue = deque([(i, j)])
-                board[i][j] = f ^ 1
-                visited[i][j] = True
-                lst = [(i, j)]
-
-                while queue:
-                    x, y = queue.popleft()
-                    for _ in range(4):
-                        nx, ny = x + dx[_], y + dy[_]
-                        if nx < 0 or nx > len(board) - 1 or ny < 0 or ny > len(board) - 1:
+## 덩어리 찾기 - BFS
+def bfs(board, target):
+    R,C = len(board), len(board[0])
+    que = deque()
+    blocks = []
+    visited = [[False for _ in range(C)] for _ in range(R)]
+    for i in range(R):
+        for j in range(C):
+            if not(visited[i][j]) and board[i][j]==target:
+                que.append([i,j])
+                visited[i][j]=True
+                block=[]
+    
+    
+                while que:
+                    r,c = que.popleft()
+                    block.append([r,c])
+                    for idx in range(4):
+                        nr, nc = r+dr[idx],c+dc[idx]
+                        ## 범위에 안 속함 // 이미 방문함 // target이 아님
+                        if not(0<=nr<R) or not(0<=nc<C) or visited[nr][nc] or board[nr][nc]!=target:
                             continue
-                        elif board[nx][ny] == f:
-                            queue.append((nx, ny))
-                            board[nx][ny] = f ^ 1
-                            visited[nx][ny] = True
-                            lst.append((nx, ny))
-                empty_board_list.append(lst)
 
-    return empty_board_list
-
-
-# block의 인덱스들로 table을 만드는 함수
-def make_table(block):
-    x, y = zip(*block)
-    c, r = max(x) - min(x) + 1, max(y) - min(y) + 1
-    table = [[0] * r for _ in range(c)]
-
-    for i, j in block:
-        i, j = i - min(x), j - min(y)
-        table[i][j] = 1
-    return table
+                        que.append([nr,nc])
+                        visited[nr][nc]=True
+                blocks.append(block)
+ 
+    return blocks
+    
+    
 
 
-# 오른쪽으로 90도 회전하는 함수
-def rotate(puzzle):
-    rotate = [[0] * len(puzzle) for _ in range(len(puzzle[0]))]
-    count = 0
-    for i in range(len(puzzle)):
-        for j in range(len(puzzle[i])):
-            if puzzle[i][j] == 1:
-                count += 1
-            rotate[j][len(puzzle) - 1 - i] = puzzle[i][j]
-    return rotate, count
+## 주어진 좌표를 (0,0)을 좌측 최상단으로 갖는 배열로 정규화
+def regularize(blocks):
 
+    blocks.sort(key=lambda x :x[0])
+    minR,maxR = blocks[0][0], blocks[-1][0]
+    blocks.sort(key=lambda x :x[1])
+    minC,maxC = blocks[0][1], blocks[-1][1]
+    R, C = maxR-minR+1, maxC-minC+1
+    board = [[0 for _ in range(C)] for _ in range(R)]
+    #print(maxR, minR, maxC, minC)
+    for r,c in blocks:
+        board[r-minR][c-minC]=1
+    #for i in board:
+    #    print(*i)
+    #print("---------------")
+    return board
+    
 
-def solution(game_board, table):
+## 90회전
+def rotate90(board):
+    R, C = len(board), len(board[0])
+    rotated = [[0 for _ in range(R)] for _ in range(C)]
+    for r in range(R):
+        for c in range(C):
+            rotated[c][R-r-1]=board[r][c]
+            
+    #for i in rotated:
+    #    print(*i)
+    return rotated
+
+def solution(game_board, table_board):
+    game_blocks = (bfs(game_board,0))
+    table_blocks = (bfs(table_board,1))
     answer = 0
-    empty_blocks = find_block(game_board, 0)
-    puzzles = find_block(table, 1)
-
-    for empty in empty_blocks:
+    for gb in game_blocks:
+        block1 = regularize(gb)
         filled = False
-        table = make_table(empty)
-
-        for puzzle_origin in puzzles:
-            if filled == True:
-                break
-
-            puzzle = make_table(puzzle_origin)
-            for i in range(4):
-                puzzle, count = rotate(puzzle)
-
-                if table == puzzle:
-                    answer += count
-                    puzzles.remove(puzzle_origin)
+        for tb in table_blocks:
+            block2 = regularize(tb)
+            
+            for _ in range(4):
+                block2 = rotate90(block2)
+                if block1 == block2:
                     filled = True
                     break
+            if filled:
+                table_blocks.remove(tb)
+                answer+=len(gb)
+                break
 
     return answer
