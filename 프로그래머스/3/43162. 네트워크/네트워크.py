@@ -1,5 +1,5 @@
 ## 유니온 파인드로 한번 풀어보자
-
+## https://school.programmers.co.kr/questions/55001
 
 def find_parent(x, parent):
     if x!=parent[x]:
@@ -16,15 +16,19 @@ def union(a,b,parent):
 
 def solution(n, computers):
     answer = 0
-    parent = [i for i in range(n)]
+    parent = [i for i in range(n+1)]
     
     
-    for a in range(n):
-        for b in range(n):
-            if a==b: continue
-            if computers[a][b]:
+    for a in range(1, n+1):
+        for b in range(1, n+1):
+            if computers[a-1][b-1]:
+                if (find_parent(a,parent)==find_parent(b,parent)):
+                    continue
+                
                 union(a,b,parent)
     ans = set()
-    for i in range(n):
-        ans.add(find_parent(i,parent))
+    print(parent)
+    for x in range(1, n+1):
+        ans.add(find_parent(x, parent))
+    print(parent)
     return len(ans)
