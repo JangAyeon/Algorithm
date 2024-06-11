@@ -1,31 +1,25 @@
 def solution(arr):
-    ## 숫자는 문자형에서 숫자형으로 변환
     n = len(arr)
-    max_dp = [[0 for _ in range(n)] for _ in range(n)]
-    min_dp = [[0 for _ in range(n)] for _ in range(n)]
-    for i in range(n):
-        if i%2==0:
-            arr[i]=int(arr[i])
-            max_dp[i][i]=min_dp[i][i]=arr[i]
-
-    for x in range(3,n+1,2):
-        for left in range(0,n,2):
-            right = x+left-1
-            
-            if right>=n:
-                break
-
-            _max, _min=[],[]
-            for op_idx in range(left+1, right,2):
-                if arr[op_idx]=="+":
-                    _max.append(max_dp[left][op_idx-1]+max_dp[op_idx+1][right])
-                    _min.append(min_dp[left][op_idx-1]+min_dp[op_idx+1][right])
-                elif arr[op_idx]=="-":
-                    _max.append(max_dp[left][op_idx-1]-min_dp[op_idx+1][right])
-                    _min.append(min_dp[left][op_idx-1]-max_dp[op_idx+1][right])
-            min_dp[left][right]=min(_min)
-            max_dp[left][right]=max(_max)
+    max_dp =[[0 for _ in range(n)] for _ in range(n)]
+    min_dp =[[0 for _ in range(n)] for _ in range(n)]
+    for idx in range(n):
+        if arr[idx] not in ["-","+"]:
+            arr[idx] = max_dp[idx][idx] = min_dp[idx][idx] = int(arr[idx])
     
-
-    answer =max_dp[0][-1]
+    for gap in range(3, n+1, 2):
+        for start in range(0, n,2):
+            end = start+gap-1
+            if end>=n:
+                break
+            max_, min_ =  [],[]
+            for op in range(start+1, end, 2):
+                if arr[op]=="+":
+                    max_.append(max_dp[start][op-1]+max_dp[op+1][end])
+                    min_.append(min_dp[start][op-1]+min_dp[op+1][end])
+                elif arr[op]=="-":
+                    max_.append(max_dp[start][op-1]-min_dp[op+1][end])
+                    min_.append(min_dp[start][op-1]-max_dp[op+1][end])
+            max_dp[start][end]=max(max_)
+            min_dp[start][end]=min(min_)
+    answer = (max_dp[0][-1])
     return answer
