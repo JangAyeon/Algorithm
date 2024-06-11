@@ -1,88 +1,75 @@
 from collections import deque
 
-dr = [-1,1,0,0]
-dc = [0,0,-1,1]
+dr,dc=[-1,1,0,0],[0,0,-1,1]
 
-## 덩어리 찾기 - BFS
 def bfs(board, target):
-    R,C = len(board), len(board[0])
+    N=len(board)
+    visited = [[False for _ in range(N)] for _ in range(N)]
     que = deque()
-    blocks = []
-    visited = [[False for _ in range(C)] for _ in range(R)]
-    for i in range(R):
-        for j in range(C):
+    spots=[]
+    for i in range(N):
+        for j in range(N):
             if not(visited[i][j]) and board[i][j]==target:
                 que.append([i,j])
                 visited[i][j]=True
-                block=[]
-    
-    
+                spot = []
+
                 while que:
                     r,c = que.popleft()
-                    block.append([r,c])
+                    spot.append([r,c])
                     for idx in range(4):
                         nr, nc = r+dr[idx],c+dc[idx]
-                        ## 범위에 안 속함 // 이미 방문함 // target이 아님
-                        if not(0<=nr<R) or not(0<=nc<C) or visited[nr][nc] or board[nr][nc]!=target:
+                        if not(0<=nr<N) or not(0<=nc<N) or visited[nr][nc] or board[nr][nc]!=target: 
                             continue
-
-                        que.append([nr,nc])
+                        que.append([nr, nc])
                         visited[nr][nc]=True
-                blocks.append(block)
- 
-    return blocks
-    
-    
 
+                spots.append(spot)
 
-## 주어진 좌표를 (0,0)을 좌측 최상단으로 갖는 배열로 정규화
-def regularize(blocks):
+    return spots
 
-    blocks.sort(key=lambda x :x[0])
-    minR,maxR = blocks[0][0], blocks[-1][0]
-    blocks.sort(key=lambda x :x[1])
-    minC,maxC = blocks[0][1], blocks[-1][1]
-    R, C = maxR-minR+1, maxC-minC+1
-    board = [[0 for _ in range(C)] for _ in range(R)]
-    #print(maxR, minR, maxC, minC)
-    for r,c in blocks:
+def regularize(pieces):
+
+    pieces.sort(key=lambda x:x[0])
+    maxR,minR = pieces[-1][0],pieces[0][0]
+    pieces.sort(key=lambda x:x[1])
+    maxC,minC = pieces[-1][1],pieces[0][1]
+    board = [[0 for _ in range(maxC-minC+1)] for _ in range(maxR-minR+1)]
+
+    for r,c in pieces:
         board[r-minR][c-minC]=1
-    #for i in board:
-    #    print(*i)
-    #print("---------------")
-    return board
-    
 
-## 90회전
-def rotate90(board):
+    return board
+
+def rotate(board):
     R, C = len(board), len(board[0])
     rotated = [[0 for _ in range(R)] for _ in range(C)]
     for r in range(R):
         for c in range(C):
             rotated[c][R-r-1]=board[r][c]
-            
-    #for i in rotated:
-    #    print(*i)
     return rotated
 
-def solution(game_board, table_board):
-    game_blocks = (bfs(game_board,0))
-    table_blocks = (bfs(table_board,1))
+def solution(game_board, puzzle_board):
     answer = 0
-    for gb in game_blocks:
-        block1 = regularize(gb)
-        filled = False
-        for tb in table_blocks:
-            block2 = regularize(tb)
-            
-            for _ in range(4):
-                block2 = rotate90(block2)
-                if block1 == block2:
-                    filled = True
-                    break
-            if filled:
-                table_blocks.remove(tb)
-                answer+=len(gb)
-                break
+    blanks = bfs(game_board,0)
 
+    puzzles = bfs(puzzle_board,1)
+    for blank in blanks:
+        reg_blank = regularize(blank)
+        flag = False
+        for original_puzzle in puzzles:
+            puzzle = regularize(original_puzzle)
+            for _ in range(4):
+                puzzle = rotate(puzzle)
+                if puzzle == reg_blank:
+                    flag = True
+                    break ## 회전 중지
+            if flag:
+                puzzles.remove(original_puzzle)
+                break  ## 퍼즐 탐색 중지
+        if flag:
+            answer+=len(blank)
+
+            
+    
     return answer
