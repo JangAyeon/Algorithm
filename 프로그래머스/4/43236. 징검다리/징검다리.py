@@ -1,30 +1,33 @@
 def solution(distance, rocks, n):
-    answer = 0
-    
+    answer = -float("inf")
+    start,end= 0,distance
     rocks.append(distance)
-    rocks = sorted(rocks)
-    
-    left, right = 0, distance  
-    
-    while left <= right:
-        
-        mid = (left + right) // 2  
-        min_distance = float('inf')  
-        current = 0  
-        remove_cnt = 0  
-        
+    rocks.sort()
+    while start<=end:
+        mid = (start+end)//2
+        curr =0 
+        remove_cnt = 0
+        gap_min = float("inf")
         for rock in rocks:
-            diff = rock - current  
-            if diff < mid:  
-                remove_cnt += 1
-            else:  
-                current = rock  
-                min_distance = min(min_distance, diff)  
-        
-        if remove_cnt > n:  
-            right = mid - 1
-        else:  
-            answer = min_distance
-            left = mid + 1
 
+            gap = rock-curr
+            if gap <mid:
+                
+                remove_cnt +=1
+            else:
+                curr = rock
+                gap_min=min(gap, gap_min)
+        
+        ## 제거 횟수가 주어진 횟수보다 큰 경우
+        ## 제거 횟수를 줄이려면 거리를 더 줄여야 함
+        if remove_cnt>n:
+            end = mid-1
+
+            ##answer = max(answer, max_gap)
+        ## 제거 횟수가 주어진 횟수보다 더 작은 경우
+        ## 제거 횟수를 늘리려면 주어진 횟수를 더 키워야 함
+        else:
+            start = mid+1
+            answer = max(answer, gap_min)
+           
     return answer
