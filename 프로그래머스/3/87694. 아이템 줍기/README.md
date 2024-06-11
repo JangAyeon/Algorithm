@@ -1,10 +1,10 @@
 # [level 3] 아이템 줍기 - 87694 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/87694) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/87694?language=python3) 
 
 ### 성능 요약
 
-메모리: 10.3 MB, 시간: 0.27 ms
+메모리: 10.4 MB, 시간: 0.79 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 06월 01일 22:21:09
+2024년 06월 11일 11:42:07
 
 ### 문제 설명
 
