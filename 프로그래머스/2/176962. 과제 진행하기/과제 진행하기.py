@@ -1,23 +1,33 @@
 def solution(plans):
-    stack = []
-    answer = []
-    for i in range(len(plans)):
-        h, m = map(int, plans[i][1].split(':'))
-        plans[i][1] = h*60 + m
-        plans[i][2] = int(plans[i][2])
-    plans.sort(key=lambda x: x[1])
-    for i in range(len(plans)-1):
-        stack.append([plans[i][0], plans[i][2]])
-        gap = plans[i+1][1] - plans[i][1]
-        while stack and gap:
-            if stack[-1][1] <= gap:
-                cn, ct = stack.pop()
-                gap -= ct
-                answer.append(cn)
-            else:
-                stack[-1][1] -= gap
+    answer=[]
+    stack =[]
+    n = len(plans)
+    
+    for idx in range(n):
+        subject, hhmm, time = plans[idx]
+        hh, mm= map(int, hhmm.split(":"))
+        time = int(time)
+        plans[idx][1] = hh*60+mm
+        plans[idx][2]=time
+    plans.sort(key=lambda x:x[1])
+    print(plans)
+    for idx in range(n-1):
+        gap = plans[idx+1][1]-plans[idx][1]
+        stack.append([plans[idx][0], plans[idx][2]])
+
+        while gap and stack:
+            if gap>=stack[-1][1]: ## 다음 과제 전까지 현재 과제 다 할 수 있음
+                name, time=stack.pop()
+                answer.append(name)
+                gap-=time
+            else: ## 다음 과제 전까지 현재 과제 다 끝내지 못함
+                stack[-1][1]-=gap
                 gap = 0
     answer.append(plans[-1][0])
-    for i in range(len(stack)):
-        answer.append(stack[~i][0])
+    while stack:
+        answer.append(stack.pop()[0])
+    
+                
+
+
     return answer
