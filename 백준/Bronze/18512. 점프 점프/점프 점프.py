@@ -11,7 +11,7 @@ while True:
         print(k+i*n)
         break
     ##print(temp//m, temp/m)
-    if i>1000:
+    if i>100:
         print(-1)
         break
     i+=1
