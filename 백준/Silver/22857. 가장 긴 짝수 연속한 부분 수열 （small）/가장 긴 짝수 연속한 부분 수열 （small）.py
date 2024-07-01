@@ -1,25 +1,30 @@
 import sys
 input = sys.stdin.readline
 
-n,m =map(int, input().split())
-arr = [0]+list(map(int, input().split()))
-## print(n,m,arr)
+n, k = map(int, input().split())
+lst = list(map(int, input().split()))
 
-#0번 제거, 1번 제거, 2번 제거, m번 제거
-dp = [[0 for _ in range(m+1)] for _ in range(n+1)]
+cnt = 0
+start, end = 0, 0
+size, size_max = 0, 0
+flag = 1
 
-for i in range(1,n+1):
-    s = arr[i]%2 
-    for j in range(m+1):
-        if s==0: ## 짝수인 경우
-            dp[i][j]=dp[i-1][j]+1
-        else: ## 홀수인 경우
-            if j==0:
-                continue
-            dp[i][j]=dp[i-1][j-1]
-
-result = []               
-for v in dp:
-    result.append(v[m])
+for start in range(n):
+    while cnt <= k and end<n:
+        if lst[end] % 2: ## 홀수임
+            ## 제외 횟수 다 씀
+            if cnt == k: 
+                break
+            ## 제외 횟수 아직 덜 씀 - 제외 횟수 증가
+            cnt += 1
+        size += 1 ## 길이 증가
+        end += 1 ## tail 증가
     
-print(max(result))
+    size_max = max(size_max, size-cnt)
+        
+    if lst[start] % 2:
+        cnt -= 1
+        
+    size -= 1
+
+print(size_max)
