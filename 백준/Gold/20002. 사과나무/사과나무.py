@@ -2,43 +2,21 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-graph = [list(map(int, input().split())) for _ in range(n)]
+pre = [[-1001]*(n+1) for _ in range(n+1)]
 
+# (i, j)까지의 구간합 구하기
+for i in range(1, n+1):
+    arr = list(map(int, input().split()))
+    for j in range(1, n+1):
+        pre[i][j] = pre[i][j-1] + pre[i-1][j] - pre[i-1][j-1] + arr[j-1]
 
+max_profit = pre[0][0]
+# 정사각형으로 자른다.
+for k in range(n):
+    for i in range(1, n-k+1):
+        for j in range(1, n-k+1):
+            # 시작점을 시작점(i, j), 끝점이(i+k, j+k)인 정사각형의 총이익
+            profit = pre[i+k][j+k] - pre[i-1][j+k] - pre[i+k][j-1] + pre[i-1][j-1]
+            max_profit = max(max_profit, profit)    # 최대 총이익 업데이트
 
-preSum = [[0 for _ in range(n)] for _ in range(n)]
-
-for i in range(n):
-    for j in range(n):
-        if i==0:
-            if j==0:
-                preSum[i][j]=graph[i][j]
-            else:
-                preSum[i][j]=preSum[i][j-1]+graph[i][j]
-        else:
-            if j==0:
-                preSum[i][j]=preSum[i-1][j]+graph[i][j]
-            else:
-                preSum[i][j]=preSum[i-1][j]+preSum[i][j-1]-preSum[i-1][j-1]+graph[i][j]
-
-
-
-
-answer= -1000
-for size in range(1, n+1):
-    for i in range(size-1, n):
-        for j in range(size-1, n):
-            temp = preSum[i][j]
-            ##print("####",preSum[i][j])
-            if i-size>=0:
-                ##print(preSum[i-size][j], "빼기")
-                temp-=preSum[i-size][j]
-            if j-size>=0:
-                ##print(preSum[i][j-size], "빼기")
-                temp-=preSum[i][j-size]
-            if i-size>=0 and j-size>=0:
-                ##print(preSum[i-size][j-size], "더하기")
-                temp+=preSum[i-size][j-size]
-            ##print(size,(i,j), temp)
-            answer=max(answer, temp)
-print(answer)
+print(max_profit)
