@@ -2,11 +2,11 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-graph = [[-1000 for _ in range(n+1)]]
+graph = [[0 for _ in range(n+1)]]
 
 
 for _ in range(n):
-    row = [-1000]+list(map(int, input().split()))
+    row = [0]+list(map(int, input().split()))
     graph.append(row)
 
 for i in range(1,n+1):
@@ -15,7 +15,7 @@ for i in range(1,n+1):
 
 
 
-answer = graph[0][0]
+answer = graph[1][1]
 for size in range(1,n+1):
     for i in range(size,n+1):
         for j in range(size,n+1):
