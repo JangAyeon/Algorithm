@@ -12,7 +12,7 @@ def get_c(m):
 
 
 result = 0 
-while end-start>1e-6:
+while end-start>1e-4:
     mid = (start+end)/2
     if get_c(mid)>=c:
         start = mid
