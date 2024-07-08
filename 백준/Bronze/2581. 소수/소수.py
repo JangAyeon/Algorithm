@@ -1,25 +1,29 @@
-
-
 import sys
 input = sys.stdin.readline
-n= max(2,int(input()))
-m = int(input())
+from collections import defaultdict
 
-arr= []
-if n>= 2:
-    for num in range(n, m+1):
-        flag = True
-        
-        for k in range(2, (num)//2+1):
-            ##print(num, num%k,k)
-            if num%k==0:
-                flag = False
-                break
-        if flag:
-            arr.append(num)
 
-if len(arr):
-    print(sum(arr))
-    print(min(arr))
-else:
+n= int(input())
+m=int(input())
+visited = [0 for _ in range(m+1)]
+
+
+for num in range(2,int(m**(1/2))+1):
+    for i in range(num*2, m+1, num):
+        if not(visited[i]):
+            visited[i]=1
+
+result = 0
+start = max(2,n)
+index = m
+for i in range(start,len(visited)):
+    if not(visited[i]):
+        index = min(index,i)
+        result+=(i)
+
+
+if result==0:
     print(-1)
+else:
+    print(result)
+    print(index)
