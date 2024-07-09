@@ -1,8 +1,7 @@
-
 import sys
 
 T = int(input())
-m=80
+m=41
 dp = [[0,0] for _ in range(m)]
 dp[0]=[1,0]
 dp[1]=[0,1]
