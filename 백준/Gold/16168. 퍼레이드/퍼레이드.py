@@ -1,10 +1,10 @@
 import sys
-
+input = sys.stdin.readline
 
 
 
 #메인 코드 부분
-v,e=map(int,sys.stdin.readline().split())
+v,e=map(int,input().split())
 
 parents=[i for i in range(v+1)]
 
@@ -16,10 +16,6 @@ def find_parent(x):
     return parents[x]
 
 
-
-
-
-
 def union(x,y):
     x=find_parent(x)
     y=find_parent(y)
@@ -28,8 +24,6 @@ def union(x,y):
         parents[y]=x
     else:
         parents[x]=y
-
-
 
 
 def all_union():
@@ -53,13 +47,11 @@ def able_degree():
 
 
 for _ in range(e):
-    v1,v2=map(int,sys.stdin.readline().split())
+    v1,v2=map(int,input().split())
     graph[v1].append(v2)
     graph[v2].append(v1)
-    
     if parents[v1]!=parents[v2]:
         union(v1,v2)
-
 
 
 
