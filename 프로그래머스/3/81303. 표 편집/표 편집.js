@@ -1,49 +1,44 @@
 function solution(n, k, cmds) {
     k+=1
-     const up = [...new Array(n+2)].map((_,i)=>i-1)
-     const down = [...new Array(n+2)].map((_,i)=>i+1)
-     // console.log(up, down)
-    const stack = []
-    
-    for(let cmd of cmds){
-        const action = cmd[0]
-        if (action=="Z"){
-            const restore = stack.pop()
-            down[up[restore]]=restore
-            up[down[restore]]=restore
-           
-            // console.log(cmd)
+    const up = [...new Array(n+2)].map((_,idx)=>idx-1)
+    const down = [...new Array(n+2)].map((_,idx)=>idx+1)
+    const removed = []
+    const answer = new Array(n).fill("O")
+    //console.log(k)
+    for (const cmd of cmds){
+        let [direction, steps] = cmd.split(" ")
+        if (direction === "D"){
+            while(steps){
+            k = down[k]
+            steps-=1           
+            }
+     
         }
-        else if (action=="C"){ // 삭제
-            stack.push(k)
+        else if (direction === "U"){
+                        while(steps){
+            k = up[k]
+            steps-=1           
+            }
+        }
+        else if (direction=="C"){
             down[up[k]]=down[k]
             up[down[k]]=up[k]
-             k=n<down[k]?up[k]:down[k]
-            //console.log(cmd)
+            removed.push(k)
+            // console.log(k, n-removed.length)
+            k= n<down[k]?up[k]:down[k]
         }
         else{
-            let step = parseInt(cmd.split(" ")[1])
-            //console.log(action, step)
-            if(action=="D"){
-                while(step){
-                    k = down[k]
-                    step-=1
-                }
-                
-            }
-            else{
-                while(step){
-                    k = up[k]
-                    step-=1
-                }
-            }
+            restore = removed.pop()
+            up[down[restore]]=restore
+            down[up[restore]]=restore
+
+            // console.log("restored", restore)
         }
+        // console.log(direction, steps,k, removed)
+        
     }
-    //console.log(stack)
-    const answer = new Array(n).fill("O")
-    for (const i of stack){
-        answer[i-1]="X"
+    for(let idx of removed){
+        answer[idx-1]="X"
     }
-     
-    return answer.join("")
+    return answer.join("");
 }
