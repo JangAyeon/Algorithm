@@ -1,10 +1,10 @@
 # [level 4] 트리 트리오 중간값 - 68937 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/68937) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/68937?language=javascript) 
 
 ### 성능 요약
 
-메모리: 133 MB, 시간: 1527.22 ms
+메모리: 188 MB, 시간: 460.47 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 08월 08일 12:11:47
+2024년 08월 08일 13:08:21
 
 ### 문제 설명
 
