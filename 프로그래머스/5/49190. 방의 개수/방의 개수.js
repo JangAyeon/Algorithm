@@ -11,8 +11,7 @@ function solution(arrows) {
    
     const edges = new Map()
     const nodes = new Map()
-    let r =0
-    let c = 0
+    let [r,c] = [0,0]
     let answer = 0
     nodes.set(`${r}_${c}`, true)
     for(let dir of arrows){
