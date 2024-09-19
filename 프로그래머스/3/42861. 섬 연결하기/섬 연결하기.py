@@ -15,7 +15,6 @@ def union(a,b,parent):
 def solution(n, costs):
     answer = 0
     costs.sort(key=lambda x:(x[2]))
-    visited=[False]*(n)
     parent=[i for i in range(n)]
     for a,b,c in costs:
         if find_parent(a, parent)!=find_parent(b,parent):
