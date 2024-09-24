@@ -3,7 +3,7 @@ const input = require("fs")
   .toString()
   .trim()
   .split("\n")
-  .map((el) => el.split(" ").map(Number));
+  .map((el) => el.split(" ").map(BigInt));
 // console.log(input)
 
 const n = input[0]
@@ -11,14 +11,16 @@ const distance = input[1]
 const prices = input[2]
 let minPrice = input[2][0]
 
-let answer = 0
+let answer = BigInt(0)
 
 
 for(let i=0;i<n-1;i++){
 const dist = distance[i]
-minPrice= Math.min(prices[i], minPrice)
+if(prices[i]< minPrice){
+    minPrice= prices[i]
+}
 answer+=dist*minPrice
 
 }
-console.log(answer)
+console.log(answer.toString())
 
