@@ -1,29 +1,24 @@
 import sys
 input = sys.stdin.readline
+import math
 
 l,w,h = map(int, input().split())
-total_v  = l * w * h
 n = int(input())
-cubes = []
-for i in range(n):
-    s, count = map(int, input().split())
-    s = 2**s
-    ## 부피, 한변, 갯수
-    cubes.append([s*s*s, s, count])
-
-
-curr_v = 0
-answer = 0
+cubes = [list(map(int, input().split())) for _ in range(n)]
 cubes.sort(reverse=True)
-for v, s, c in cubes:
+total_v=total_c=answer=0
+answer = 0
+flag = False
+for [i,count] in cubes:
+    side = 2**i
+    total_c *=8
+    curr_count = (l//side)* (w//side)* (h//side) - total_c
+    curr_count = min(curr_count, count)
+    total_c+=curr_count
+    answer+=curr_count
+    total_v+=(side**3)*curr_count
 
-    curr_v*=8
-    curr_c = (l//s)*(w//s)*(h//s)-curr_v
-    curr_c = min(curr_c, c)
-    answer+=curr_c
-    curr_v+=curr_c
-
-if curr_v==total_v:
+if total_v==l*w*h:
     print(answer)
 else:
     print(-1)
