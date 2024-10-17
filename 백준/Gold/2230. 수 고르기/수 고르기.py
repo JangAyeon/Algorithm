@@ -1,28 +1,23 @@
 import sys
-input = sys.stdin.readline
+input =  sys.stdin.readline
 
 n,m = map(int, input().split())
-arr = []
-for _ in range(n):
-    arr.append(int(input()))
-
+arr = [int(input()) for _ in range(n)]
 arr.sort()
-answer =max(arr)-min(arr)
-s,e =0,0
+##print(n,m,arr)
+
+
+start = end = gap=0
+answer = float("inf")
+
+while start!=n and end!=n:
+    
+    gap = arr[end]-arr[start]
+    ##print(start, end, gap, answer)
+    if gap>=m:
+        start+=1
+        answer=min(answer, gap)
+    else:
+        end+=1
         
-while True:
-        if not(s <= e and e < len(arr)):
-            break
-        diff =  arr[e]-arr[s]
-        if diff==m:
-            answer = m
-            break
-        elif diff>m:
-            answer = min(diff, answer)
-            s+=1
-        else:
-            e+=1
-
-
-
 print(answer)
