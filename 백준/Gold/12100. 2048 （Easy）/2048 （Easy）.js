@@ -22,76 +22,76 @@ rl.on(("line"), (line) => {
         let n = board.length;
         if (dir === 0) { // 동쪽 (오른쪽)
             for (let i = 0; i < n; i++) {
-                let top = n - 1;
+                let spot = n - 1; // 가장 오른쪽
                 for (let j = n - 2; j >= 0; j--) {
                     if (board[i][j]) {
                         let tmp = board[i][j];
                         board[i][j] = 0;
-                        if (board[i][top] === 0) {
-                            board[i][top] = tmp;
-                        } else if (board[i][top] === tmp) {
-                            board[i][top] = tmp * 2;
-                            top--;
+                        if (board[i][spot] === 0) {
+                            board[i][spot] = tmp;
+                        } else if (board[i][spot] === tmp) {
+                            board[i][spot] = tmp * 2;
+                            spot--;
                         } else {
-                            top--;
-                            board[i][top] = tmp;
+                            spot--;
+                            board[i][spot] = tmp;
                         }
                     }
                 }
             }
         } else if (dir === 1) { // 서쪽 (왼쪽)
             for (let i = 0; i < n; i++) {
-                let top = 0;
+                let spot = 0; // 가장 왼쪽
                 for (let j = 1; j < n; j++) {
-                    if (board[i][j]) {
+                    if (board[i][j]) { // 0이 아닌 값이
                         let tmp = board[i][j];
-                        board[i][j] = 0;
-                        if (board[i][top] === 0) {
-                            board[i][top] = tmp;
-                        } else if (board[i][top] === tmp) {
-                            board[i][top] = tmp * 2;
-                            top++;
-                        } else {
-                            top++;
-                            board[i][top] = tmp;
+                        board[i][j] = 0; // 일단 해당 칸은 이동하니까 0으로
+                        if (board[i][spot] === 0) { // 비어있으면
+                            board[i][spot] = tmp; // 옮김
+                        } else if (board[i][spot] === tmp) { // 같으면
+                            board[i][spot] = tmp * 2; // 합친다
+                            spot++;
+                        } else { // 비어있지 않고 다른 값일때
+                            spot++; // pass
+                            board[i][spot] = tmp; // 바로 옆에 붙임
                         }
                     }
                 }
             }
         } else if (dir === 2) { // 남쪽 (아래)
             for (let j = 0; j < n; j++) {
-                let top = n - 1;
+                let spot = n - 1;
                 for (let i = n - 2; i >= 0; i--) {
                     if (board[i][j]) {
                         let tmp = board[i][j];
                         board[i][j] = 0;
-                        if (board[top][j] === 0) {
-                            board[top][j] = tmp;
-                        } else if (board[top][j] === tmp) {
-                            board[top][j] = tmp * 2;
-                            top--;
+                        if (board[spot][j] === 0) {
+                            board[spot][j] = tmp;
+                        } else if (board[spot][j] === tmp) {
+                            board[spot][j] = tmp * 2;
+                            spot--;
                         } else {
-                            top--;
-                            board[top][j] = tmp;
+                            spot--;
+                            board[spot][j] = tmp;
                         }
                     }
                 }
             }
         } else { // 북쪽 (위)
             for (let j = 0; j < n; j++) {
-                let top = 0;
+                let spot = 0;
                 for (let i = 1; i < n; i++) {
                     if (board[i][j]) {
                         let tmp = board[i][j];
                         board[i][j] = 0;
-                        if (board[top][j] === 0) {
-                            board[top][j] = tmp;
-                        } else if (board[top][j] === tmp) {
-                            board[top][j] = tmp * 2;
-                            top++;
+                        if (board[spot][j] === 0) {
+                            board[spot][j] = tmp;
+                        } else if (board[spot][j] === tmp) {
+                            board[spot][j] = tmp * 2;
+                            spot++;
                         } else {
-                            top++;
-                            board[top][j] = tmp;
+                            spot++;
+                            board[spot][j] = tmp;
                         }
                     }
                 }
