@@ -3,73 +3,46 @@ const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 })
-
 const lines = []
-
-
-function getPrimes(n) {
-    const numbers = new Array(n + 1).fill(true)
-    numbers[0] = numbers[1] = false
-
-    for (let i = 2; i <= n; i++) {
-        for (let j = i * 2; j <= n; j += i) {
-            numbers[j] = false
-
-        }
-    }
-
-    const primes = numbers.map((e, idx) => e ? idx : 0).filter((e) => e != 0)
-    // console.log("getPrimes: ", primes)
-    return primes
-
-}
-
-function movePointers(arr, M) {
-    let start = 0
-    let end = 0
-    let sum_ = arr[0]
-    const answer = []
-
-
-
-
-    while (end < arr.length) {
-        const chunck = arr.slice(start, end + 1)
-        const sum_ = chunck.reduce((acc, curr) => (acc += curr), 0)
-
-        if (sum_ <= M) {
-            if (sum_ == M) {
-                //console.log("Match!!", arr.slice(start, end + 1))
-                answer.push(chunck)
-
-            }
-
-            end += 1
-
-        } else {
-            start += 1
-
-        }
-
-    }
-
-    return answer
-
-
-
-
-}
-
-rl.on(("line"), (line) => {
+rl.on("line", (line) => {
     lines.push(line.trim())
 }).on(("close"), () => {
-    const n = Number(lines[0])
-    const primes = getPrimes(n)
+
+    const N = Number(lines[0])
+    const lst = new Array(N + 1).fill(true)
+    lst[0] = lst[1] = false
+    for (let i = 2; i < N + 1; i++) {
+        for (let j = i + i; j < N + 1; j += i) {
+            lst[j] = false
+
+        }
 
 
 
-    const answer = movePointers(primes, n)
+    }
+    const arr = lst.map((e, idx) => (e === true ? idx : 0)).filter((e) => e != 0)
+    let start = 0
+    let end = start
+    let total = arr[end]
+let answer = 0
 
-    console.log(answer.length)
+    while (start<=end &&end < N + 1) {
+        if (total <= N) {
+            if (total == N) {
+                // console.log(arr.slice(start, end + 1))
+answer+=1
 
+            }
+            end += 1
+total+=arr[end]
+
+        } else {
+total-=arr[start]
+
+            start += 1
+        }
+
+    }
+
+    console.log( answer)
 })
