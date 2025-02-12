@@ -51,7 +51,7 @@ function findCycle(n, edges) {
 
         const currentNode = path[path.length - 1];
         for (const neighbor of graph[currentNode]) {
-            if (neighbor === path[0] && depth >= 2) { // 사이클 발견
+            if (neighbor === path[0] && depth >1) { // 사이클 발견
                 for (const node of path) {
                     cycle[node] = 0; // 사이클에 속하는 노드
                 }
