@@ -1,17 +1,50 @@
-function findCycle(n, edges) {
+function createGraph(n, edges) {
+
     const graph = Array.from({
         length: n + 1
     }, () => []);
-    const cycle = Array(n + 1).fill(3000); // 사이클까지 각 노드의 도달 거리
-    const visited = Array(n + 1).fill(0);
-    let found = false;
+
+
+
 
     // 그래프 생성
     for (const [a, b] of edges) {
         graph[a].push(b);
         graph[b].push(a);
     }
+    return graph
 
+}
+
+
+function bfs(n, graph, cycle) {
+    // BFS로 사이클에서 각 노드까지의 거리 계산
+    const queue = [];
+    for (let i = 1; i <= n; i++) {
+        if (cycle[i] === 0) {
+            queue.push([i, 0]);
+        }
+    }
+
+    while (queue.length > 0) {
+        const [current, distance] = queue.shift();
+        for (const neighbor of graph[current]) {
+            if (cycle[neighbor] === Infinity) { // 방문하지 않은 경우 거리 기록
+                cycle[neighbor] = distance + 1;
+                queue.push([neighbor, distance + 1]);
+            }
+        }
+    }
+
+    return cycle.slice(1); // 1번 노드부터 출력
+}
+
+function findCycle(n, edges) {
+
+    const graph = createGraph(n, edges)
+    const visited = Array(n + 1).fill(0);
+    let found = false;
+    const cycle = Array(n + 1).fill(Infinity); // 사이클까지 각 노드의 도달 거리
     // 사이클 탐색 (DFS)
     function dfs(path, depth) {
         if (found) return;
@@ -39,26 +72,10 @@ function findCycle(n, edges) {
         dfs([i], 0);
         visited[i] = 0;
     }
+    const distance = bfs(n, graph, cycle)
+    return distance
 
-    // BFS로 사이클에서 각 노드까지의 거리 계산
-    const queue = [];
-    for (let i = 1; i <= n; i++) {
-        if (cycle[i] === 0) {
-            queue.push([i, 0]);
-        }
-    }
 
-    while (queue.length > 0) {
-        const [current, distance] = queue.shift();
-        for (const neighbor of graph[current]) {
-            if (cycle[neighbor] === 3000) { // 방문하지 않은 경우 거리 기록
-                cycle[neighbor] = distance + 1;
-                queue.push([neighbor, distance + 1]);
-            }
-        }
-    }
-
-    return cycle.slice(1); // 1번 노드부터 출력
 }
 
 // 테스트 데이터
@@ -87,7 +104,7 @@ rl.on("line", (line) => {
 }).on("close", () => {
     const n = Number(lines[0])
     const edges = lines.slice(1).map((r) => r.split(" ").map(Number))
-    const answer =findCycle(n, edges).join(" ")
+    const answer = findCycle(n, edges).join(" ")
     console.log(answer);
 
     //console.log("close", n, edges)
