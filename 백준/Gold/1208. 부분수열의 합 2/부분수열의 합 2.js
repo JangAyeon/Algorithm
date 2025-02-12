@@ -16,7 +16,7 @@ rl.on("line", (line) => {
         const leftArr = arr.slice(0, half)
         const rightArr = arr.slice(half)
         let answer = 0
-        const leftDic = {}
+        const leftDic = new Map()
         // console.log(leftArr, rightArr, N, S, arr)
         leftSearch(0, 0)
 
@@ -27,11 +27,14 @@ rl.on("line", (line) => {
             const curr = leftArr[index]
             leftSearch(sum_ + curr, index + 1)
             leftSearch(sum_, index + 1)
-            if (leftDic[sum_ + curr]) {
-                leftDic[sum_ + curr]++
-            } else {
-                leftDic[sum_ + curr] = 1
-            }
+
+            const value = (leftDic.get(sum_+curr)??0)+1
+            leftDic.set(sum_+curr,value )
+            // if (leftDicsum_ + curr]) {
+            //     leftDic[sum_ + curr]++
+            // } else {
+            //     leftDic[sum_ + curr] = 1
+            // }
             if (sum_ + curr === S) {
                 answer++
             }
@@ -46,8 +49,10 @@ rl.on("line", (line) => {
             const curr = rightArr[index]
             rightSearch(sum_ + curr, index + 1)
             rightSearch(sum_, index + 1)
-            if (leftDic[S - (sum_ + curr)]) {
-                answer += (leftDic[S - (sum_ + curr)])
+            const rest = S - (sum_ + curr)
+            if (leftDic.has(rest)) {
+                const value = leftDic.get(rest)
+                answer += (value)
             }
             if (sum_ + curr === S) {
                 answer++
