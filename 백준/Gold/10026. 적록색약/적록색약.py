@@ -1,61 +1,43 @@
 import sys
 input = sys.stdin.readline
 from collections import deque
-
-n = int(input())
-graph = [list(input().strip()) for _ in range(n)]
-visited_Not =[[False for _ in range(n)]for _ in range(n)]
-visited_Is =[[False for _ in range(n)]for _ in range(n)]
-dr= [-1,1,0,0]
-dc= [0,0,-1,1]
+N = int(input())
+arr = [list(input().strip()) for _ in range(N)]
 
 
-area_Not = 0
-area_Is = 0
+directions  = [
+    [0, -1],[0,1],
+    [1,0],[-1,0]
+]
+answer = [0, 0] ## 정상인, 적록 색맹
 
-def bfs_Not(r,c, type):
-    que=deque()
-    que.append([r,c])
-    visited_Not[r][c]=True
-    while que:
-        r,c = que.popleft()
-        for idx in range(4):
-            nr, nc = r+dr[idx], c+dc[idx]
-            
-            ## 범위 나감
-            if not(0<=nr<n) or not(0<=nc<n):
-                continue
-            
-            if not(visited_Not[nr][nc]) and graph[nr][nc]==graph[r][c]:
-                que.append([nr, nc])
-                visited_Not[nr][nc] = True
-
-def bfs_Is(r,c, type):
+## 그냥 두번 돌려도 됨
+def bfs(r,c, isSick): ## r, c, 적록색맹 여부 
     que = deque()
-    que.append([r,c])
+    color = arr[r][c]
+    que.append([r,c]) ## r, c, type
+    visited[r][c] = True
     while que:
         r,c = que.popleft()
-        for idx in range(4):
-            nr, nc = r+dr[idx], c+dc[idx]
-            
-            ## 범위 나감
-            if not(0<=nr<n) or not(0<=nc<n):
+        for [dr, dc] in directions:
+            nr, nc = r+dr, c+dc
+            if(not(0<=nr<N) or not(0<=nc<N) ) or visited[nr][nc]: ## 범위 나간 경우
                 continue
-
-            if not(visited_Is[nr][nc]): ## rb, rg, br
-                if  (graph[r][c]=="B" and graph[nr][nc]=="B") or (graph[r][c]!="B" and graph[nr][nc]!="B"):
+             ## 적록 색맹인 경우
+            if isSick == True and ((color=="B" and arr[nr][nc]=="B") or (color!="B" and arr[nr][nc]!="B")):
+                    visited[nr][nc]=True
                     que.append([nr, nc])
-                    visited_Is[nr][nc]=True
- 
+            elif isSick==False and color == arr[nr][nc]:
+                    visited[nr][nc]= True
+                    que.append([nr, nc])
 
-for i in range(n):
-    for j in range(n):
-        if not(visited_Not[i][j]):
-            area_Not+=1
-            bfs_Not(i, j, graph[i][j])
+for idx in range(len(answer)):
+    isSick = False if idx==0 else True
+    visited = [[False for _ in range(N)] for _ in range(N)]
+    for i in range(N):
+        for j in range(N):
+            if not(visited[i][j]):
+                answer[idx]+=1
+                bfs(i, j , isSick)
 
-        if not(visited_Is[i][j]):
-            area_Is+=1
-            bfs_Is(i,j,graph[i][j])
-
-print(area_Not, area_Is)
+print(*answer)
