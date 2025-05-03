@@ -7,27 +7,32 @@ const rl = readline.createInterface({
 const input = [];
 rl.on('line', line => input.push(line)).on('close', () => {
   let T = +input[0];
-  let idx = 1;
+  let line = 1;
 
-  for (let t = 0; t < T; t++) {
-    const K = +input[idx++];
-    const files = input[idx++].split(' ').map(Number);
+  while (T--) {
+    const K = +input[line++];
+    const files = input[line++].split(' ').map(Number);
 
-    const dp = Array.from({ length: K }, () => Array(K).fill(0));
-    const prefixSum = Array(K).fill(0);
-    prefixSum[0] = files[0];
-    for (let i = 1; i < K; i++) {
-      prefixSum[i] = prefixSum[i - 1] + files[i];
+    // 누적합 계산
+    const prefix = Array(K + 1).fill(0);
+    for (let i = 0; i < K; i++) {
+      prefix[i + 1] = prefix[i] + files[i];
     }
 
+    // DP 테이블 초기화
+    const dp = Array.from({ length: K }, () => Array(K).fill(0));
+
+    // 길이 2 이상인 부분 배열만 고려
     for (let len = 2; len <= K; len++) {
       for (let i = 0; i <= K - len; i++) {
         const j = i + len - 1;
         dp[i][j] = Infinity;
 
         for (let k = i; k < j; k++) {
-          const cost = dp[i][k] + dp[k + 1][j] + (prefixSum[j] - (i > 0 ? prefixSum[i - 1] : 0));
-          dp[i][j] = Math.min(dp[i][j], cost);
+          const cost = dp[i][k] + dp[k + 1][j] + prefix[j + 1] - prefix[i];
+          if (cost < dp[i][j]) {
+            dp[i][j] = cost;
+          }
         }
       }
     }
