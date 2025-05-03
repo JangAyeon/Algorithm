@@ -30,9 +30,7 @@ rl.on('line', line => input.push(line)).on('close', () => {
 
         for (let k = i; k < j; k++) {
           const cost = dp[i][k] + dp[k + 1][j] + prefix[j + 1] - prefix[i];
-          if (cost < dp[i][j]) {
-            dp[i][j] = cost;
-          }
+          dp[i][j] = Math.min( cost, dp[i][j]);
         }
       }
     }
