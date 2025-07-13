@@ -1,14 +1,17 @@
-let fs = require("fs")
-let line = fs.readFileSync("/dev/stdin").toString().split("\n");
+const readline = require("readline")
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
 
-let n = Number(line[0]);
-let arr = line[1].split(" ").map((x)=>Number(x))
-let m = Math.max(...arr)
-let score = []
+})
 
-for (let s of arr){
-  score.push(s/m*100)
-}
-let total = score.reduce((a,b)=>a+b)
-let cnt = arr.length
-console.log(total/cnt)
+const input = []
+
+rl.on("line", line => input.push(line)).on("close", () => {
+    const N = +input[0]
+    const arr = input[1].split(" ").map(Number)
+    const total = arr.reduce((acc, item)=>acc+item, 0)
+    const M = Math.max(...arr)
+    const answer = total/M*100/N
+    console.log(answer)
+})
