@@ -1,34 +1,29 @@
-const readline = require('readline');
+const readline = require("readline")
 const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+    input:process.stdin,
+    output:process.stdout
+})
 
-const input = [];
-rl.on('line', line => input.push(line)).on('close', () => {
-   // 수 갯수 N, 합 구하는 횟수 M
-  	const [N,M] = input[0].split(" ").map(Number)
-    const arr =  [0,...input[1].split(" ").map(Number)]
-    for(let i=1;i<arr.length;i++){
-        arr[i]=(arr[i-1]+arr[i])%M
+const input = []
+rl.on("line", line =>input.push(line)).on("close", ()=>{
+
+    // console.log(input)
+    const [N,M] = input[0].split(" ").map(Number)
+    const arr = [0,...input[1].split(" ").map(Number)]
+    for(let idx=1;idx<N+1;idx++){
+        arr[idx] = (arr[idx]+arr[idx-1])%M
     }
-    arr.shift()
     // console.log(arr)
- 
-    const values = new Set(arr)
-    const cntDic = new Map()
+    arr.shift() // pad로 넣은 0 빼기
+    const countDic = new Map()
     for(let e of arr){
-   //     console.log(e, cntDic.has(e),cntDic.get(e))
-        cntDic.set(e,cntDic.has(e)?cntDic.get(e)+1:1)
+        
+        countDic.set(e, countDic.get(e)+1||1)
     }
-    const zeroCnt = cntDic.has(0)?cntDic.get(0):0
-    let answer = zeroCnt
-    for(let e of values){
-        const v = cntDic.get(e)
-        answer+= (v*(v-1))/2
-
+    let answer = countDic.get(0)||0
+    for(let e of countDic.values()){
+        answer+=(e*(e-1)/2)
     }
-    console.log(answer)
-    
-    
-});
+    // console.log(N,M, arr)
+    console.log( answer)
+})
