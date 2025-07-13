@@ -55,4 +55,9 @@ rl.on("line", line => input.push(line)).on("close", () => {
 // AAAA
 // 0 0 0 0
 // ans: 3
+//
+// 1 1
+// T
+// 0 1 0 0
+// ans: 0
 // """
