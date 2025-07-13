@@ -1,63 +1,42 @@
+//  {‘A’, ‘C’, ‘G’, ‘T’} 
+
+//  {‘A’, ‘C’, ‘G’, ‘T’} 
+
 const readline = require("readline")
 const rl = readline.createInterface({
+
     input: process.stdin,
     output: process.stdout
 })
 
-function isValidPart(countDic,rulesDic){
-    for(let k of Object.keys(rulesDic)){
-        // console.log(k, countDic.get(k),rulesDic[k])
-        if(countDic.get(k)<rulesDic[k]){
-            return false
-        }
+function isValidPart(countDic, rulesDic){
+    const keys = Object.keys(rulesDic)
+    for(let k of keys){
+        if(countDic.get(k)<rulesDic[k]){return false}
     }
     return true
 }
 
 const input = []
 rl.on("line", line => input.push(line)).on("close", () => {
-    const [N,M] = input[0].split(" ").map(Number)
+    const [N, M] = input[0].split(" ").map(Number)
     const arr = input[1].split("")
+    const [A, C, G, T] = input[2].split(" ").map(Number)
+    const rulesDic= {A,C,G,T}
+    const countDic = new Map(Object.keys(rulesDic).map(k=>[k,0]))
     let answer = 0
-    // {‘A’, ‘C’, ‘G’, ‘T’} 
-    const [A,C,G,T] = input[2].split(" ").map(Number)
-    const rulesDic = {A, G, C, T}
-    const countDic = new Map()
-    for (let e of Object.keys(rulesDic)){
-         countDic.set(e, 0)
+    // 초기 윈도우
+    for(let i=0;i<M;i++){
+        countDic.set(arr[i], (countDic.get(arr[i])||0)+1)
     }
-   
-    let [start, end]=[0, M-1]
-    for(let idx=0;idx<M;idx++){
-        const c = arr[idx]
-        const v = countDic.get(c)
-        countDic.set(c, v?v+1:1)
+    if(isValidPart(countDic, rulesDic)) answer++
+    for(let i=M;i<N;i++){
+        const removed = arr[i-M]
+        const added = arr[i]
+        countDic.set(removed, (countDic.get(removed)||0)-1)
+        countDic.set(added, (countDic.get(added)||0)+1)
+        if(isValidPart(countDic, rulesDic))answer++
     }
-    isValidPart(countDic, rulesDic) && answer++
-       // console.log(answer,countDic, rulesDic)
-    while(end+1<N){
-        const removed = arr[start]
-        const added = arr[end+1]
-        countDic.set(removed, countDic.get(removed)-1)
-        countDic.set(added, (countDic.get(added)??1)+1)
-        isValidPart(countDic, rulesDic) && answer++
-        // console.log(answer, arr.slice(start, end+1), countDic)
-        start++
-        end++
-    }
-    
-
+    // console.log(N, M, arr, A, C, G, T, answer)
     console.log(answer)
 })
-
-// """
-// 4 2
-// AAAA
-// 0 0 0 0
-// ans: 3
-//
-// 1 1
-// T
-// 0 1 0 0
-// ans: 0
-// """
