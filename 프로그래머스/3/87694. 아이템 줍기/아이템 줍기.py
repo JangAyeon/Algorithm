@@ -1,47 +1,39 @@
 from collections import deque
 
-dr=[-1,1,0,0]
-dc=[0,0,-1,1]
-
-def drawGraph(c1,r1,c2,r2,board):
-    for r in range(r1, r2+1):
-        for c in range(c1, c2+1):
-            if (r==r1 or r==r2 or c1==c or c2==c) and board[r][c]!=0:
-                board[r][c]=1
-            else:
-                board[r][c]=0
-    return board
-
-def bfs(start, end,board):
-    que = deque()
-    n = len(board)
-    visited = [[False for _ in range(n)] for _ in range(n)]
-    que.append(start)
-    visited[start[0]][start[1]]=True
-    while que:
-        r,c = que.popleft()
-        if [r,c]==end:
-            print(board[r][c]//2)
-            return board[r][c]//2
-        for idx in range(4):
-            nr, nc = r+dr[idx],c+dc[idx]
-            
-            ## 범위 나감 // 이미 방문함 // 테두리 아님
-            if not(0<=nr<n) or not(0<=nc<n) or board[nr][nc]!=1 or visited[nr][nc]==True:
-                continue
-            ##print(nr, nc, board[nr][nc]+board[r][c] )
-            que.append([nr, nc])
-            visited[nr][nc]=True
-            board[nr][nc]+=board[r][c]
-    
-
+dr = [-1,1,0,0]
+dc = [0,0,-1,1]
 
 def solution(rectangles, characterX, characterY, itemX, itemY):
-    n = 51*2
-    ## 아예 테두리=1, 영역 내부=0, 영역 밖=-1
-    board = [[-1 for _ in range(n)] for _ in range(n)]
-    for c1,r1,c2,r2 in rectangles:
-        board = drawGraph(c1*2, r1*2,c2*2,r2*2, board)
-    answer = bfs([characterY*2,characterX*2],[itemY*2,itemX*2] ,board)
-
-    return answer
+    n = 102  # 좌표를 2배 확장하므로 (50*2=100 이상 필요)
+    board = [[0]*n for _ in range(n)]
+    
+    # 1. 모든 사각형 채우기
+    for x1,y1,x2,y2 in rectangles:
+        x1,y1,x2,y2 = x1*2, y1*2, x2*2, y2*2
+        for r in range(y1, y2+1):
+            for c in range(x1, x2+1):
+                board[r][c] = 1
+    
+    # 2. 내부 부분 지우기
+    for x1,y1,x2,y2 in rectangles:
+        x1,y1,x2,y2 = x1*2, y1*2, x2*2, y2*2
+        for r in range(y1+1, y2):
+            for c in range(x1+1, x2):
+                board[r][c] = 0
+    
+    # 3. BFS 탐색
+    sx, sy = characterX*2, characterY*2
+    ex, ey = itemX*2, itemY*2
+    q = deque([(sy, sx, 0)])
+    visited = [[False]*n for _ in range(n)]
+    visited[sy][sx] = True
+    
+    while q:
+        r,c,d = q.popleft()
+        if (r,c) == (ey,ex):
+            return d//2  # 좌표를 2배 했으니 다시 절반으로
+        for i in range(4):
+            nr, nc = r+dr[i], c+dc[i]
+            if 0<=nr<n and 0<=nc<n and not visited[nr][nc] and board[nr][nc]==1:
+                visited[nr][nc] = True
+                q.append((nr,nc,d+1))
