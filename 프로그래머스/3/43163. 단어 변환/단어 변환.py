@@ -1,33 +1,22 @@
-## 한개만 다른지 판별하는 함수
-def diff(w,t):
-    count = 0
-    for idx in range(len(w)):
-        if w[idx]!=t[idx]:
-            count+=1
-    isDiff = True if count==1 else False
-    return isDiff
-
-
-
-
 def solution(begin, target, words):
-    visited=[0]*len(words)
-    n = len(words)
-    answer = float("inf")
-    def dfs(dept,begin):
-        nonlocal answer
-        if begin == target:
-            ## print("end", begin, dept)
-            answer= min(answer, dept)
+    answer = []
+    N = len(words)
+    visited = [ False for _ in range(N)]
+    def countDiff(str1, str2):
+        count = 0
+        for s1, s2 in zip(str1, str2):
+            if(s1!=s2):count+=1
+        return count
+    
+    def dfs(start, dept, lst):
+        if(start==target):
+            answer.append(dept)
             return
-        for idx in range(n):
-            if not(visited[idx]):
-                visited[idx]=1
-                if diff(begin, words[idx]):
-                    dfs(dept+1, words[idx])
-                visited[idx]=0
-            
-    dfs(0, begin)
-    answer = 0 if answer==float("inf") else answer
-        
-    return answer
+        for idx, v in enumerate(words):
+            if(visited[idx] or countDiff(v, start)>1):
+                continue
+            visited[idx]=True
+            dfs(v, dept+1, lst+[v])
+            visited[idx]=False
+    dfs(begin, 0, [begin])
+    return min(answer) if len(answer)>0 else 0
