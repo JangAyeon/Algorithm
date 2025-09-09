@@ -1,39 +1,40 @@
 from collections import deque
-
-dr = [-1,1,0,0]
-dc = [0,0,-1,1]
+from math import ceil
 
 def solution(rectangles, characterX, characterY, itemX, itemY):
-    n = 102  # 좌표를 2배 확장하므로 (50*2=100 이상 필요)
-    board = [[0]*n for _ in range(n)]
+    [characterX, characterY, itemX, itemY]=[characterX*2, characterY*2, itemX*2, itemY*2]
     
-    # 1. 모든 사각형 채우기
-    for x1,y1,x2,y2 in rectangles:
-        x1,y1,x2,y2 = x1*2, y1*2, x2*2, y2*2
-        for r in range(y1, y2+1):
-            for c in range(x1, x2+1):
-                board[r][c] = 1
-    
-    # 2. 내부 부분 지우기
-    for x1,y1,x2,y2 in rectangles:
-        x1,y1,x2,y2 = x1*2, y1*2, x2*2, y2*2
-        for r in range(y1+1, y2):
-            for c in range(x1+1, x2):
-                board[r][c] = 0
-    
-    # 3. BFS 탐색
-    sx, sy = characterX*2, characterY*2
-    ex, ey = itemX*2, itemY*2
-    q = deque([(sy, sx, 0)])
-    visited = [[False]*n for _ in range(n)]
-    visited[sy][sx] = True
-    
-    while q:
-        r,c,d = q.popleft()
-        if (r,c) == (ey,ex):
-            return d//2  # 좌표를 2배 했으니 다시 절반으로
-        for i in range(4):
-            nr, nc = r+dr[i], c+dc[i]
-            if 0<=nr<n and 0<=nc<n and not visited[nr][nc] and board[nr][nc]==1:
-                visited[nr][nc] = True
-                q.append((nr,nc,d+1))
+    ### 기존 도화지 (0)
+    graph = [[0 for _ in range(102)] for _ in range(102)]
+    answer = 0
+    ### 영역 싹다 색칠하기 (1)
+    for rectangle in rectangles:
+        x1,y1,x2,y2 = rectangle
+        for y in range(y1*2, y2*2+1):
+            for x in range(x1*2,x2*2+1):
+                graph[y][x]=1
+
+    ### 영역 안쪽 색칠 벗기기 (0)
+    for rectangle in rectangles:
+        [x1,y1,x2,y2] = rectangle
+        for y in range(y1*2+1, y2*2):
+            for x in range(x1*2+1,x2*2):
+                graph[y][x]=0
+    ### 1인 곳만 이동 가능하게 하기 (나중에 이동 횟수는 나누기 2)
+    directions = [[0,-1],[0,1],[1,0],[-1,0]]
+    que = deque()
+    que.append([characterY, characterX])
+    while(que):
+        y,x = que.popleft()
+        ##print(y,x)
+        if(y==itemY and x==itemX):
+            answer = (graph[y][x]//2)
+            break
+        for dx,dy in directions:
+            nx, ny = dx+x, dy+y
+            if(not(0<=nx<102) or not(0<=ny<102) or graph[ny][nx]!=1):
+                continue
+            graph[ny][nx] = graph[y][x]+1
+            que.append([ny, nx])
+
+    return answer
