@@ -1,15 +1,16 @@
 function solution(people, limit) {
-    let answer = 0;
-    people.sort((a,b)=>b-a)
-    let h = 0 // 가장 무거운 사람
-    let l = people.length-1 // 가장 가벼운 사람
-    while(h<=l){
-        if(people[h]+people[l]<=limit){ // 보트 탈 수 있음
-            l-- // 다음에는 가벼운 사람 태울 거임
+    people.sort((a, b) => a - b); // 오름차순 정렬
+    let i = 0;                    // 가장 가벼운 사람 index
+    let j = people.length - 1;    // 가장 무거운 사람 index
+    let boats = 0;
+
+    while (i <= j) {
+        if (people[i] + people[j] <= limit) {
+            i++; // 가벼운 사람 태움
         }
-        h++
-        answer++
+        j--; // 무거운 사람은 항상 태움
+        boats++;
     }
-    
-    return answer;
+
+    return boats;
 }
