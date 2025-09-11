@@ -1,16 +1,15 @@
 def solution(routes):
-    routes.sort()
-    ##print(routes)
-    start, end = routes[0]
     answer = 1
-    for s, e in routes[1:]:
-        if start<=s<=end:
-            start = s
-            end=min(end,e)
+    routes.sort()
+    start, end = routes[0]
+    for s,e in routes:
+        if(start<=s <=end):
+            start = max(start, s)
+            end = min(end, e)
         else:
-            start=s
-            end=e
             answer+=1
-        ##print(start, end)
-
+            start = s
+            end =e
+        print(s,e, start, end, answer)
+    print(routes)
     return answer
