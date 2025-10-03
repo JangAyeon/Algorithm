@@ -1,0 +1,7 @@
+-- 코드를 입력하세요
+SELECT 
+    LEFT(product_code,2) as CATEGORY,
+    COUNT(*) as PRODUCTS
+FROM PRODUCT
+GROUP BY CATEGORY
+ORDER BY CATEGORY ASC
