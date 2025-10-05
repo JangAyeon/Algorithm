@@ -1,20 +1,21 @@
 function solution(prices) {
-    var answer = new Array(prices.length).fill(0);
-    const stack = []
-    for(let idx=0;idx<prices.length;idx++){
-
-        while(prices[idx]<prices[stack[stack.length-1]]){
-            answer[stack.pop()]+=1       
+    const N = prices.length
+    const answer = Array.from({length:N}).fill(0);
+    const stack = [0]
+    for(let i=1;i<N;i++){
+        while(stack.length>0 && prices[stack[stack.length-1]]>prices[i]){
+            j=stack.pop()
+            answer[j] = i-j
         }
-        for(let i of stack){
-                answer[i]+=1
-        }
-        stack.push(idx)
-
-
+        stack.push(i)
         
-        // console.log(answer, stack,prices[idx])
     }
-    
+    while(stack.length>0){
+        const j = stack.pop()
+        answer[j] = N-1-j
+    }
+
+    console.log(answer, stack)
+
     return answer;
 }
