@@ -1,26 +1,27 @@
 function solution(n, times) {
-
+    // 주어진 시간 (t) 동안 사람 몇명 심사 가능한지
+    // t 동안 - n명 이상 처리 가능 -> t 줄이기
+    //       - n명 미만 처리 가능 -> t 늘이기
     
-    function getCount(t){
-        let total = 0
-        for(let e of times){
-            total+=Math.floor(t/e)
+    function getCnt(limit){
+        let count = 0
+        for(let time of times){
+            count +=Math.floor(limit/time)
         }
-        console.log(`### time: ${t} ppl: ${total}`)
-        return total
+        return count
     }
-    let [start, end] = [1, Math.max(...times)*n]
-    let answer = Math.max(...times)*n
-    while(start<=end){
-        mid = Math.floor((start+end)/2)
-        ppl = getCount(mid)
-        if(ppl<n){start=mid+1}
-        else{
+    let answer = 1000000000*n
+    let [left, right] = [1,1000000000*n]
+    while(left<=right){
+        let mid=Math.ceil((left+right)/2)
+        const cnt = getCnt(mid)
+        if(cnt>=n){
+            right = mid-1
             answer = Math.min(answer, mid)
-            end = mid-1
+        }else{
+            left = mid+1
         }
-        
     }
-    console.log(answer)
+    
     return answer;
 }
