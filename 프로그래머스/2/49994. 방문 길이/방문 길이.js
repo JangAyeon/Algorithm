@@ -1,34 +1,25 @@
-
-function setLocation(dir,r,c){
-    if (dir==="U"){
-        return [r-1, c]
-    }
-    else if(dir=="D"){
-        return [r+1, c]
-    }
-    else if(dir=="L"){
-        return [r, c-1]
-    }
-    else{
-        return [r, c+1]
-    }
-}
-
-function isValid(r,c){
-    return (-6<r && r<6 && -6<c && c<6)
-}
-
 function solution(dirs) {
-    let [r,c] = [0,0]
-    const visited = new Set()
-    for(let dir of dirs){
-        const [nr, nc] = setLocation(dir,r,c)
-        if (!isValid(nr, nc)){continue}
-        visited.add(`${nr}${nc}${r}${c}`)
-        visited.add(`${r}${c}${nr}${nc}`)
-        r=nr
-        c=nc
+    const directions={
+        "U":[-1,0],
+        "D":[1,0],
+        "R":[0,1],
+        "L":[0,-1]
     }
+    const visited = new Map()
+    let [r,c] = [0,0]
+    
+    for(let dir of dirs){
+        const [dr,dc] = directions[dir]
+        const [nr, nc] = [r+dr, c+dc]
+        if(nr<-5 ||nr>5 || nc<-5 || nc>5 ){continue}
+        const [route,reversed] = [`${r}_${c}_${nr}_${nc}`,`${nr}_${nc}_${r}_${c}`]
+        visited.set(route,true)
+        visited.set(reversed, true)
+        r = nr
+        c = nc
+    }
+    
     const answer = visited.size/2
-    return answer
+    // console.log(visited, answer)
+    return answer;
 }
