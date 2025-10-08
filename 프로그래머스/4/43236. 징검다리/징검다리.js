@@ -1,33 +1,32 @@
-function solution(distance, rocks, n) {
-    rocks.sort((a, b) => a - b);
-    rocks.push(distance);
-
-    let left = 1;
-    let right = distance;
+function solution(last, rocks, N) {
     let answer = 0;
-
-    while (left <= right) {
-        const mid = Math.floor((left + right) / 2);
-        let prev = 0;
-        let remove = 0;
-
-        for (let i = 0; i < rocks.length; i++) {
-            if (rocks[i] - prev < mid) {
-                remove++;
-            } else {
-                prev = rocks[i];
-            }
+    rocks.sort((a,b)=>a-b)
+    rocks = [...rocks,last]
+    const M = rocks.length
+    let [left, right] = [1, last]
+    // console.log(rocks)
+    function getRemoved(target){
+        let [start, count] = [0,0]
+        for(let i=0;i<M;i++){
+            const gap = rocks[i]-start
+            // console.log(start, rocks[i], count)
+            if(gap>=target){start = rocks[i]}
+            else{count+=1}
         }
-
-        if (remove > n) {
-            // 너무 많이 제거해야 한다면, 거리 줄이기
-            right = mid - 1;
-        } else {
-            // mid 유지 가능 ⇒ 더 큰 거리 시도
-            answer = mid;
-            left = mid + 1;
+        
+        return count
+    }
+    while(left<=right){
+        const mid = Math.ceil((left+right)/2)
+        const count = getRemoved(mid)
+        // console.log("####",count, mid)
+        if(count>N){
+            right = mid-1
+        }else{
+            left=mid+1
+            answer = mid
+            
         }
     }
-
     return answer;
 }
