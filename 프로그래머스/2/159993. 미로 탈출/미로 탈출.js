@@ -1,79 +1,58 @@
-const d=[[0,1],[0,-1],[1,0],[-1,0]]
-
-
-
-function isAble(nr, nc, ROW, COL){
-    if (!(0<=nr && nr<ROW)){
-        return false
-    }
-    else if (!(0<=nc && nc<COL)){
-        return false
-    }
-    return true
-}
-
-function bfs(start, end,maps,ROW, COL){
-    const visited = [...new Array(ROW)].map((_,i)=>new Array(COL).fill(0))
-    const que = [start]
-    
-    while (que.length){
-        const [r,c] = que.shift()
-        if ((r===end[0] && c==end[1])){
-            //console.log("end",visited[r][c])
-            return visited[r][c]
-        }
-        for(let [dr, dc] of d){
-            const [nr, nc] = [r+dr,c+dc]
-            // 범위에 벗어남 && 이미 방문함 && 갈 수 있는 곳이 아님
- 
-            if (!(isAble(nr, nc, ROW, COL)) || visited[nr][nc]!=0 || maps[nr][nc]=="X"){
-                continue
+function getMapInfo(maps,N,M){
+    const info={}
+        for(let i=0;i<N;i++){
+        for(let j=0;j<M;j++){
+            if(maps[i][j]=="L"){
+                info["L"] = [i,j]
+            }else if(maps[i][j]==="E"){
+                info["E"] = [i,j]
+            }else if(maps[i][j]=="S"){
+                info["S"] = [i,j]
             }
-            visited[nr][nc]=visited[r][c]+1
-            que.push([nr, nc])
-
-
-            //console.log("###",nr,nc)
-  
-            
         }
-        
     }
-    return 0
+    return info
 }
 
 function solution(maps) {
-    
-    const arr = []
-    const [ROW, COL] = [maps.length, maps[0].length]
-    
-    const location={}
-    const loc = ["S", "L","E"]
+    const [N,M] = [maps.length, maps[0].length]
+    const info = getMapInfo(maps,N,M)
+    const directions = [
+        [-1,0],[1,0],[0,-1],[0,1]
+    ]
 
-    const visited = [...new Array(ROW)].map((_,i)=>new Array(COL).fill(0))
 
-    //console.log(visited)
-    // 시작, 도착, 레버
-    for(let idx=0;idx<maps.length;idx++){
-        arr.push(maps[idx].split())
-        for(let l of loc){
-            if(maps[idx].includes(l)){
-                location[l]=[idx, maps[idx].indexOf(l)]
+
+    console.log(info)
+    
+    function bfs(start, destination){
+            const que = [start]
+                const visited = Array.from({length:N},()=>Array.from({length:M}).fill(-1))
+    visited[start[0]][start[1]]=0
+    while(que.length){
+        const [r,c] = que.shift()
+        if(r==destination[0] && c==destination[1]){
+            // console.log(visited[r][c])
+            return visited[r][c]
+        }
+        for(let [dr, dc] of directions){
+            const [nr, nc] = [r+dr,c+dc]
+            if(nr<0 || nr>=N || nc<0 || nc>=M||visited[nr][nc]!=-1 || maps[nr][nc]=="X"){
+                continue
             }
+            que.push([nr, nc])
+            visited[nr][nc] = visited[r][c]+1
         }
     }
-    const distance = [bfs(location["S"], location["L"],maps, ROW, COL), bfs(location["L"], location["E"],maps, ROW, COL)]
-    
-    
-    
-    
-    
-    if (distance.includes(0)){
         return -1
     }
-    else{
-        const answer = distance.reduce((num, prev)=>(num+prev),0)
-        return answer
-    }
+
+    const a=bfs(info.S, info.L)
+    const b = bfs(info.L, info.E)
+    console.log(a,b)
+    if(a==-1|| b==-1){return -1}
+    else{return a+b}
+    
+
 
 }
