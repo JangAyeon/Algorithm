@@ -1,44 +1,59 @@
-function solution(n, k, cmds) {
-    k+=1
-    const up = [...new Array(n+2)].map((_,idx)=>idx-1)
-    const down = [...new Array(n+2)].map((_,idx)=>idx+1)
-    const removed = []
-    const answer = new Array(n).fill("O")
-    //console.log(k)
-    for (const cmd of cmds){
-        let [direction, steps] = cmd.split(" ")
-        if (direction === "D"){
-            while(steps){
-            k = down[k]
-            steps-=1           
-            }
-     
-        }
-        else if (direction === "U"){
-                        while(steps){
-            k = up[k]
-            steps-=1           
-            }
-        }
-        else if (direction=="C"){
-            down[up[k]]=down[k]
-            up[down[k]]=up[k]
-            removed.push(k)
-            // console.log(k, n-removed.length)
-            k= n<down[k]?up[k]:down[k]
-        }
-        else{
-            restore = removed.pop()
-            up[down[restore]]=restore
-            down[up[restore]]=restore
+class Node {
+  constructor() {
+    this.removed = false;
+    this.prev = null;
+    this.next = null;
+  }
+}
 
-            // console.log("restored", restore)
-        }
-        // console.log(direction, steps,k, removed)
-        
+function solution(n, k, cmds) {
+  const nodes = Array.from({ length: n }, () => new Node());
+  let curr = nodes[k];
+  const stack = [];
+
+  // 연결 리스트 구성
+  for (let i = 1; i < n; i++) {
+    nodes[i - 1].next = nodes[i];
+    nodes[i].prev = nodes[i - 1];
+  }
+
+  for (const cmd of cmds) {
+    const [c, num] = cmd.split(" ");
+
+    if (c === "D") {
+      let step = Number(num);
+      for (let i = 0; i < step; i++) curr = curr.next;
+    } 
+    else if (c === "U") {
+      let step = Number(num);
+      for (let i = 0; i < step; i++) curr = curr.prev;
+    } 
+    else if (c === "C") {
+      stack.push(curr);
+      curr.removed = true;
+
+      const up = curr.prev;
+      const down = curr.next;
+
+      if (up) up.next = down;
+      if (down) {
+        down.prev = up;
+        curr = down;
+      } else {
+        curr = up;
+      }
+    } 
+    else if (c === "Z") {
+      const item = stack.pop();
+      item.removed = false;
+
+      const up = item.prev;
+      const down = item.next;
+
+      if (up) up.next = item;
+      if (down) down.prev = item;
     }
-    for(let idx of removed){
-        answer[idx-1]="X"
-    }
-    return answer.join("");
+  }
+
+  return nodes.map(node => (node.removed ? "X" : "O")).join("");
 }
